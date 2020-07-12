@@ -1,0 +1,30 @@
+<div class="breadcrumb"><{$breadcrumb}></div>
+<div id="simplepage">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td id="simplepageLeftColumn">
+		<!--菜单-->
+		<ul id='simplepageNav'>
+		<{foreach from=$menuitems item=item}>
+			<{if $item->getVar('link') == $page->getVar('pageName')}>
+				<!--当前页面的菜单项-->
+				<li id="currentMenuItem"><a href="<{$item->link()}>" target="<{$item->target()}>"><{$item->title()}></a></li>
+			<{else}>
+				<!--非当前页面的菜单项-->
+				<li class="menuitem"><a href="<{$item->link()}>" target="<{$item->target()}>"><{$item->title()}></a></li>
+			<{/if}>
+		<{/foreach}>
+		</ul>
+		</td>
+    
+		<td id="simplepageContent">
+		<!--标题-->
+		<{if $page->getVar('isDisplayTitle')}>
+			<h1><{$page->getVar('title')}></h1>
+		<{/if}>
+		<!--内容-->
+		<{$page->getVar('content')}>	
+		</td>
+  </tr>
+</table>
+</div>
