@@ -11,4 +11,3 @@
 
 define("_SIMPLEPAGE_MD_MODULENAME", '簡約頁面');
 define("_SIMPLEPAGE_MD_PAGENOTFOUND", '您訪問的頁面不存在');
-?>

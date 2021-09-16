@@ -67,6 +67,3 @@ define('_AD_SIMPLEPAGE_NOTE', '
 
 <p>���м����ʾ��ģ��������������ļ� /language/{����}/modinfo.php ���޸ġ�</p>
 ');
-
-
-?>

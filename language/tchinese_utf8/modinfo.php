@@ -10,4 +10,3 @@
  */
 
 define('_MI_SIMPLEPAGE_MODULENAME', '簡約頁面');
-?>

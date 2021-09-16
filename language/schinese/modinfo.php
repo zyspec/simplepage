@@ -1,6 +1,6 @@
 <?php
 /**
- * Ä£¿éÓïÑÔÎÄ¼þ
+ * Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
  *
  * @copyright	xoops.com.cn
  * @author		bitshine <bitshine@gmail.com>
@@ -9,5 +9,4 @@
  * @package		clone
  */
 
-define('_MI_SIMPLEPAGE_MODULENAME', '¼òÔ¼Ò³Ãæ');
-?>
+define('_MI_SIMPLEPAGE_MODULENAME', 'ï¿½ï¿½Ô¼Ò³ï¿½ï¿½');

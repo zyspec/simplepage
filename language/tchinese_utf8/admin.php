@@ -67,6 +67,3 @@ define('_AD_SIMPLEPAGE_NOTE', '
 
 <p>麵包屑上顯示的模塊名稱請在語言文件 /language/{語言}/modinfo.php 中修改。</p>
 ');
-
-
-?>

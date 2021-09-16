@@ -67,6 +67,3 @@ define('_AD_SIMPLEPAGE_NOTE', '
 
 <p>面包屑上显示的模块名称请在语言文件 /language/{语言}/modinfo.php 中修改。</p>
 ');
-
-
-?>

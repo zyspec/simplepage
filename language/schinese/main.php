@@ -1,6 +1,6 @@
 <?php
 /**
- * Ç°Ì¨ÓïÑÔÎÄ¼þ 
+ * Ç°Ì¨ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ 
  *
  * @copyright	xoops.com.cn
  * @author		bitshine <bitshine@gmail.com>
@@ -9,6 +9,5 @@
  * @package		clone
  */
 
-define("_SIMPLEPAGE_MD_MODULENAME", '¼òÔ¼Ò³Ãæ');
-define("_SIMPLEPAGE_MD_PAGENOTFOUND", 'Äú·ÃÎÊµÄÒ³Ãæ²»´æÔÚ');
-?>
+define("_SIMPLEPAGE_MD_MODULENAME", 'ï¿½ï¿½Ô¼Ò³ï¿½ï¿½');
+define("_SIMPLEPAGE_MD_PAGENOTFOUND", 'ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½Ò³ï¿½æ²»ï¿½ï¿½ï¿½ï¿½');
