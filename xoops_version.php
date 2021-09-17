@@ -7,6 +7,8 @@
  * @author  bitshine <bitshine@gmail.com>
  */
 
+use \XoopsModules\Simplepage\Constants;
+
 /**
  * @var array $modversion
  */
@@ -57,13 +59,13 @@ $modversion['templates'] = [
 ];
 
 // Main Menu
-$modversion['hasMain']  = 1;
+$modversion['hasMain']     = 1;
 
 // Admin menu things
-$modversion['hasAdmin'] = 1;
+$modversion['hasAdmin']    = 1;
 $modversion['system_menu'] = 1;
-$modversion['adminindex'] = "admin/index.php";
-$modversion['adminmenu'] = "admin/menu.php";
+$modversion['adminindex']  = "admin/index.php";
+$modversion['adminmenu']   = "admin/menu.php";
 
 // Make Sample button visible?
 $modversion['config'][] = [
@@ -72,8 +74,50 @@ $modversion['config'][] = [
     'description' => '_MI_SIMPLEPAGE_MENU_PERP_DESC',
     'formtype'    => 'select',
     'valuetype'   => 'int',
-    'default'     => 25,
+    'default'     => Constants::DEFAULT_PER_PAGE,
     'options'     => ['10' => 10, '25' => 25, '50' => 50, '75' => 75, '100' => 100],
+];
+
+// Max file size in bytes
+$modversion['config'][] = [
+    'name'        => 'maxfilesize',
+    'title'       => '_MI_SIMPLEPAGE_MAXFILESIZE',
+    'description' => '_MI_SIMPLEPAGE_MAXFILESIZEDSC',
+    'formtype'    => 'textbox',
+    'valuetype'   => 'int',
+    'default'     => Constants::DEFAULT_FILE_SIZE,
+];
+
+// Max image width in px
+$modversion['config'][] = [
+    'name'        => 'maximgwidth',
+    'title'       => '_MI_SIMPLEPAGE_IMGWIDTH',
+    'description' => '_MI_SIMPLEPAGE_IMGWIDTHDSC',
+    'formtype'    => 'textbox',
+    'valuetype'   => 'int',
+    'default'     => Constants::DEFAULT_IMAGE_WIDTH,
+];
+
+// Max image height in px
+$modversion['config'][] = [
+    'name'        => 'maximgheight',
+    'title'       => '_MI_SIMPLEPAGE_IMGHEIGHT',
+    'description' => '_MI_SIMPLEPAGE_IMGHEIGHTDSC',
+    'formtype'    => 'textbox',
+    'valuetype'   => 'int',
+    'default'     => Constants::DEFAULT_IMAGE_HEIGHT,
+];
+
+
+// Max thumbnail image width in px
+$modversion['config'][] = [
+    'name'        => 'maxthumbwidth',
+    'title'       => '_MI_SIMPLEPAGE_THUMBWIDTH',
+    'description' => '_MI_SIMPLEPAGE_THUMBWIDTHDSC',
+    'formtype'    => 'select',
+    'valuetype'   => 'int',
+    'default'     => Constants::DEFAULT_THUMB_WIDTH,
+    'options'     => [100 => '100', 150 => '150', 300 => '300', 400 => '400']
 ];
 
 $modversion['config'][] = [
