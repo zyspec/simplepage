@@ -23,7 +23,7 @@ define('_AD_SIMPLEPAGE_NOPAGE', 'û��ҳ��');
 define('_AD_SIMPLEPAGE_UPDATE_DATABASE_SUCCESS', '������ݿ�ɹ�');
 define('_AD_SIMPLEPAGE_UPDATE_DATABASE_FAIL', '<div class="error">������ݿ�ɹ�ʧ��</div>');
 
-//page.php
+//Page.php
 define('_AD_SIMPLEPAGE_PAGENAME_ALREADY_EXISTS', '<div class="error">����ҳ���ʶ�Ѵ��ڣ������ظ���</div>');
 
 //page_form.php
@@ -60,7 +60,7 @@ define('_AD_SIMPLEPAGE_NOTE', '
 	<li>ҳ���Զ���ɲ˵������м</li>
 	<li>ʹ�����߱༭��༭ҳ��</li>
 	<li>�˵��Ϸ�����</li>
-	<li>ͨ���޸� templates/simplepage_index.html �����޸�ҳ��Ĳ���</li>
+	<li>ͨ���޸� templates/simplepage_index.tpl �����޸�ҳ��Ĳ���</li>
 	<li>ͨ���޸� templates/simplepage.css �����޸�ҳ������</li>
 	<li>��� clone ģ����Ը��Ƴɲ�ͬ��ģ��</li>
 </ul>

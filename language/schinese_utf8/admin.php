@@ -23,7 +23,7 @@ define('_AD_SIMPLEPAGE_NOPAGE', '没有页面');
 define('_AD_SIMPLEPAGE_UPDATE_DATABASE_SUCCESS', '更新数据库成功');
 define('_AD_SIMPLEPAGE_UPDATE_DATABASE_FAIL', '<div class="error">更新数据库成功失败</div>');
 
-//page.php
+//Page.php
 define('_AD_SIMPLEPAGE_PAGENAME_ALREADY_EXISTS', '<div class="error">可能页面标识已存在，不能重复。</div>');
 
 //page_form.php
@@ -60,7 +60,7 @@ define('_AD_SIMPLEPAGE_NOTE', '
 	<li>页面自动生成菜单和面包屑</li>
 	<li>使用在线编辑器编辑页面</li>
 	<li>菜单拖放排序</li>
-	<li>通过修改 templates/simplepage_index.html 可以修改页面的布局</li>
+	<li>通过修改 templates/simplepage_index.tpl 可以修改页面的布局</li>
 	<li>通过修改 templates/simplepage.css 可以修改页面的外观</li>
 	<li>配合 clone 模块可以复制成不同的模块</li>
 </ul>

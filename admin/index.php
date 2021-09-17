@@ -1,33 +1,79 @@
 <?php
-/**
- * 管理首页
- *
- * @copyright	xoops.com.cn
- * @author		bitshine <bitshine@gmail.com>
- * @since		1.00
- * @version		$Id$
- * @package		simplepage
+/*
+ You may not change or alter any portion of this comment or credits of
+ supporting developers from this source code or any supporting source code
+ which is considered copyrighted (c) material of the original comment or credit
+ authors.
+
+ This program is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+/**
+ * Module: Pedigree
+ *
+ * @package  \XoopsModules\Pedigree
+ * @subpackage  admin
+ * @copyright  &copy; 2000-2021 {@link https://xoops.org XOOPS Project}
+ * @license  {@link https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @author  XOOPS Module Development Team
+ * @link  https://github.com/XoopsModules25x/simplepage  Simplepage Repository
+ */
 
-require_once('../../../include/cp_header.php');
-include_once(XOOPS_ROOT_PATH."/Frameworks/art/functions.admin.php");
-require_once('../include/functions.php');
-require_once('../include/vars.php');
+use Xmf\Request;
+use XoopsModules\Simplepage\{
+    Common\TestdataButtons,
+    Constants,
+    Utility
+};
+
+/**
+ * @var \Xmf\Module\Admin $adminObject
+ * @var \XoopsModules\Simplepage\Helper $helper
+ * @var string $moduleDirName
+ * @var string $moduleDirNameUpper
+ */
+require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
-loadModuleAdminMenu(0);
-//include('../include/admin_header_tpl.php');
-echo <<<EOT
-<!--header-->
-<div>
-<!--<img src="../images/simplepage_slogo.jpg" style="float: left;" />-->
-<div style="clear: both;"></div>
-</div>
-<br />
-EOT;
 
-echo _AD_SIMPLEPAGE_NOTE;
+$adminObject->displayNavigation(basename(__FILE__));
 
-xoops_cp_footer();
+//check for latest release
 
-?>
+$newRelease = Utility::checkVerModule($helper);
+if (!empty($newRelease)) {
+    $adminObject->addItemButton(
+        $newRelease[constant('CO_' . $moduleDirNameUpper . '_RELEASE_INTRO_INDEX')],
+        $newRelease[constant('CO_' . $moduleDirNameUpper . '_RELEASE_LINK_INDEX')],
+        'download',
+        'style="color: Red"'
+    );
+}
+
+//------------- Test Data ----------------------------
+if (Constants::DISP_SAMPLE_BTN == $helper->getConfig('displaySampleButton')) {
+    TestdataButtons::loadButtonConfig($adminObject);
+    $adminObject->displayButton('left', '');
+}
+//------------- End Test Data ----------------------------
+
+//------------- Test Data Buttons ----------------------------
+$op = Request::getCmd('op', '', 'GET');
+
+switch ($op) {
+//    default:
+    case 'hide_buttons':
+        TestdataButtons::hideButtons();
+        break;
+    case 'show_buttons':
+        TestdataButtons::showButtons();
+        break;
+}
+//------------- End Test Data Buttons ----------------------------
+
+
+$adminObject->displayIndex();
+echo Utility::getServerStats();
+
+require __DIR__ . '/admin_footer.php';

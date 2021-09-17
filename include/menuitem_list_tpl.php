@@ -57,7 +57,7 @@ padding: 10px;
 .form-head a{
 	color:#FFFFFF;
 }
-.form-head a:hoover{
+.form-head a:hover{
 	color:#FF9900;
 }
 
@@ -99,22 +99,12 @@ padding: 10px;
 	margin-left:20px;
 }
 </style>
-<!--header-->
-<div>
-<!--<img src="../images/simplepage_slogo.jpg" style="float: left;" />-->
-
-<ul id="nav">
-	<li><a href="menuitem.php?op=add" class="button"><?php echo _AD_SIMPLEPAGE_ADDMENUITEM; ?></a> </li>
-</ul>
-<div style="clear: both;"></div>
-</div>
-
-<!-- 用于发送删除的ID start -->
-<form name="deletesel" action="<?php echo $_SERVER['PHP_SELF'].'?op=delete'; ?>" method="post">
-<input name="menuitemId" type="hidden" value="" />
+<!-- Used to send delete ID start -->
+<form name="deletesel" action="<?php echo $_SERVER['SCRIPT_NAME'].'?op=delete'; ?>" method="post">
+<input name="menuitemId" type="hidden" value="">
 </form>
 
-<script language="javascript" type="text/javascript">
+<script>
 <!--
 function confirmDelete(id) {
 	if (confirm('Do you confirm to delete?')) {
@@ -124,16 +114,16 @@ function confirmDelete(id) {
 }
 -->
 </script>
-<!-- 用于发送删除的ID end -->
+<!-- Used to send delete ID end -->
 
 <div style="margin: 20px 40px;">
 <h3><?php echo _AD_SIMPLEPAGE_MENUITEM; ?></h3>
-<table width="90%" border="1" align="center" cellpadding="3" cellspacing="0">
+<table class="width90 center pad3 border bspacing1">
   <tr class="form-head">
-		<td><div align="center">#</div></td>
-		<td><div align="center"><?php echo _AD_SIMPLEPAGE_TITLE; ?></div></td>
-    <td><div align="center"><?php echo _AD_SIMPLEPAGE_LINK; ?></div></td>
-    <td><div align="center"><?php echo _AD_SIMPLEPAGE_ACTION; ?></div></td>
+		<td class="center">#</td>
+		<td class="center"><?php echo _AD_SIMPLEPAGE_TITLE; ?></td>
+    <td class="center"><?php echo _AD_SIMPLEPAGE_LINK; ?></td>
+    <td class="center"><?php echo _AD_SIMPLEPAGE_ACTION; ?></td>
   </tr>
 <?php
 $cssClass = 'odd';
@@ -149,11 +139,11 @@ if ($menuitems) {
 	echo $cssClass;
 	?>
 	">
-	<td><div align="center"><?php echo $menuitem->getVar('menuitemId'); ?></div></td>
-	<td><div align="left"><?php echo $menuitem->getVar('title'); ?></div></td>
-	<td><div align="center"><?php echo $menuitem->getAdminLink(); ?></div></td>
-	<td><div align="center">
-		<a href="<?php echo $_SERVER['PHP_SELF']; ?>?op=edit&amp;menuitemId=<?php echo $menuitem->getVar('menuitemId'); ?>"><?php echo _AD_SIMPLEPAGE_EDIT; ?></a> |
+	<td><div class="center"><?php echo $menuitem->getVar('menuitemId'); ?></div></td>
+	<td><div class="left"><?php echo $menuitem->getVar('title'); ?></div></td>
+	<td><div class="center"><?php echo $menuitem->getAdminLink(); ?></div></td>
+	<td><div class="center">
+		<a href="<?php echo $_SERVER['SCRIPT_NAME']; ?>?op=edit&amp;menuitemId=<?php echo $menuitem->getVar('menuitemId'); ?>"><?php echo _AD_SIMPLEPAGE_EDIT; ?></a> |
 		<a href="#" id="<?php echo $menuitem->getVar('menuitemId'); ?>" onclick="javascript:confirmDelete(this.id);"><?php echo _AD_SIMPLEPAGE_DELETE; ?></a>
 	</div></td>
 	</tr>
@@ -165,7 +155,7 @@ if ($menuitems) {
 </div>
 
 <?php if ($menuitems) { ?>
-<div style="margin: 40px;">
+<div class="center" style="margin: 40px;">
 	<h3><?php echo _AD_SIMPLEPAGE_SORTTHEMENU; ?></h3>
 	<p><?php echo _AD_SIMPLEPAGE_DRAP_AND_DROP_THE_MENUITEM; ?></p>
 	<div align="center">
@@ -177,7 +167,7 @@ if ($menuitems) {
 
 <?php } ?>
 
-	<form id="menuOrderForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+	<form id="menuOrderForm" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" method="post">
 	<input name="op" type="hidden" value="sort">
 	<input name="menuOrder" id="menuOrder" type="hidden" value="1">
 	<input name="orderSubmit" type="button" id="orderSubmit" value="<?php echo _AD_SIMPLEPAGE_SUBMITNEWORDER ?>" onclick="submitOrder();"/>
@@ -186,9 +176,8 @@ if ($menuitems) {
 
 </div>
 
-<script language="javascript" src="../include/jquery1.1.2.js"></script>
-<script language="javascript" src="../include/interface.js"></script>
-<script language="javascript" type="text/javascript">
+<script src="../include/interface.js"></script>
+<script>
 $(document).ready(
 	function() {
 		$('#sortable').Sortable(
@@ -203,9 +192,7 @@ $(document).ready(
 		)
 	}	
 );
-</script>
 
-<script language="javascript">
 function submitOrder() {
 		document.getElementById("menuOrder").value = $.SortSerialize('sortable').hash;		
 		$("#menuOrderForm").submit();

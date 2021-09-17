@@ -1,197 +1,149 @@
 <?php
 /**
- * 管理菜单项
+ * Manage menu items
  *
- * @copyright	xoops.com.cn
- * @author		bitshine <bitshine@gmail.com>
- * @since		1.00
- * @version		$Id$
- * @package		simplepage
+ * @package  \XoopsModules\Simplepage
+ * @subpackage  admin
+ * @copyright  xoops.com.cn
+ * @copyright  &copy; 2000-2021 {@link https://xoops.org XOOPS Project}
+ * @author  bitshine <bitshine@gmail.com>
+ * @author  XOOPS Module Development Team
  */
 
-require_once('../../../include/cp_header.php');
-include_once(XOOPS_ROOT_PATH."/Frameworks/art/functions.admin.php");
+use \Xmf\Request;
+use \XoopsModules\Simplepage\{
+    Constants,
+    Helper
+};
+
+/**
+ * @var Xmf\Module\Admin $adminObject
+ * @var XoopsModules\Simplepage\Helper $helper
+ * @var string $moduleDirName
+ * @var string $moduleDirNameUpper
+ * @var string[] $icons;
+ */
+require_once __DIR__ . '/admin_header.php';
+
 require_once('../include/functions.php');
-require_once('../include/vars.php');
+//require_once('../include/vars.php');
 xoops_cp_header();
 
-$op = getRequestVar('op', 'str', 'list');
+$adminObject->displayNavigation(basename(__FILE__));
+
+$op = Request::getCmd('op', 'list');
 switch ($op) {
-	case 'add': //显示添加界面
-		loadModuleAdminMenu(2);
-		addeditMenuitem();
+	case 'add': //Show add interface
+	case 'edit': //Show editing interface
+        $adminObject->addItemButton(_AD_SIMPLEPAGE_ADDMENUITEM, 'menuitem.php?op=add', 'add');
+        $adminObject->displayButton('left');
+        $menuitemId = Request::getInt('menuitemId', 0);
+        //Get data
+        /** @var  $menuItemHandler  \XoopsModules\Simplepage\MenuItemHandler */
+        $menuItemHandler = $helper->getHandler('MenuItem');
+        $menuitem        = $menuItemHandler->get($menuitemId);
+        //include('../include/admin_header_tpl.php');
+        include('../include/menuitem_form.php');
+        break;
+	case 'save': //Save to database
+        $menuitemId = Request::getInt('menuitemId', 0);
+        /** @var $menuItemHandler \XoopsModules\Simplepage\MenuItemHandler */
+        $menuItemHandler = $helper->getHandler('MenuItem');
+        /** @var $menuitem \XoopsModules\Simplepage\MenuItem */
+        $menuitem = $menuItemHandler->get($menuitemId);
+        $menuitem->setFormVars($_POST, '');
+        //$menuitem->setVar('target', )
+        //Sorting
+        if ($menuitem->isNew()) {
+            $menuitem->setVar('weight', time());
+        }
+        //Insert into the database
+        if ($menuItemHandler->insert($menuitem)) {
+            redirect_header($_SERVER['SCRIPT_NAME'], Constants::REDIRECT_DELAY_MEDIUM, _AD_SIMPLEPAGE_UPDATE_DATABASE_SUCCESS);
+        } else {
+            //echo '<div class="error">'.$menuitem->getHtmlErrors().'</div>';
+            redirect_header($_SERVER['SCRIPT_NAME'] . '?op=add&menuitemId=' . $menuitemId, Constants::REDIRECT_DELAY_MEDIUM, $menuitem->getHtmlErrors());
+        }
+        break;
+	case 'confirmDelete': //Show delete warning
+		//confirmDelete();
 		break;
-	case 'edit': //显示编辑界面
-		loadModuleAdminMenu(2);
-		addeditMenuitem();
+	case 'delete': //Delete from database
+		//deleteMenuitem();
+        if (!Request::hasVar('menuitemId')) {
+            redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, 'Deleting object no exist.');
+        }
+        /** @var Helper $helper */
+        $helper = Helper::getInstance();
+        $menuitemId = Request::getInt('menuitemId', null);
+        /** @var $menuItemHandler \XoopsModules\Simplepage\MenuItemHandler */
+        $menuItemHandler = $helper->getHandler('MenuItem');
+        /** @var $menuitem \XoopsModules\Simplepage\MenuItem */
+        $menuitem = $menuItemHandler->get($menuitemId);
+        if (!$menuitem) {
+            $message = 'Menu item does not exist.';
+        } else {
+            $title = $menuitem->getVar('alias');
+            if ($menuItemHandler->delete($menuitem)) {
+                $message = 'Delete '.$title.' success.';
+            } else {
+                $message = '<span class="red">' . _DELETE . $title . ' fail.</span>';
+            }
+        }
+        redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, $message);
+        break;
+	case 'sort': //Perform sorting
+        $menuOrder = Request::getString('menuOrder', '');
+        $menuOrder = str_replace("sortable[]=", "", $menuOrder);
+        $order = explode('&', $menuOrder);
+
+        //Get parameters
+        $criteria = new \Criteria('', '');
+        $criteria->setSort('weight');
+
+        //Get list data
+        /** @var $menuItemHandler XoopsModules\Simplepage\MenuItemHandler */
+        $menuItemHandler = $helper->getHandler('MenuItem');
+        $menuitems = $menuItemHandler->getObjects($criteria, true);
+
+        $message = '';
+        if ($menuitems) {
+            $weight = $first = reset($menuitems)->getVar('weight');
+            if ($weight == 0) echo __FILE__.__LINE__."0000000000000000";
+            $last = end($menuitems)->getVar('weight');
+            $interval = intval(($last - $first) / (count($menuitems) - 1));
+            foreach ($order as $id) {
+                $menuitems[$id]->setVar('weight', intval($weight));
+                if (!$menuItemHandler->insert($menuitems[$id])) $message .= $menuItemHandler->getErrors();
+                //echo __FILE__.__LINE__;debugPrint($weight);
+                $weight = $weight + $interval;
+            }
+        }
+        redirect_header($_SERVER['SCRIPT_NAME'], Constants::REDIRECT_DELAY_MEDIUM, $message);
+        break;
+	case 'generate': //Generate menu items
+		//generateMenuitem();
 		break;
-	case 'save': //保存到数据库
-		saveMenuitem();
-		break;
-	case 'confirmDelete': //显示删除警告
-		confirmDelete();
-		break;
-	case 'delete': //从数据库删除
-		deleteMenuitem();
-		break;
-	case 'sort': //执行排序
-		sortMenuitem();
-		break;
-	case 'generate': //生成菜单项
-		generateMenuitem();
-		break;
-	case 'list': //列表显示
+	case 'list': //List display
 	default:
-		loadModuleAdminMenu(2);
-		listMenuitem();
-		break;
+		//listMenuitem();
+        $adminObject->addItemButton(_AD_SIMPLEPAGE_ADDMENUITEM, 'menuitem.php?op=add', 'add');
+        $adminObject->displayButton('left');
+
+        $start    = Request::getInt('start', 0);
+        $criteria = new Criteria('', '');
+        $criteria->setSort('weight');
+        //$criteria->setLimit($helper->getConfig('perpage', Constants::DEFAULT_PER_PAGE));
+        //Get list data
+        /** @var  $menuItemHandler  \XoopsModules\Simplepage\MenuItemHandler */
+        $menuItemHandler = $helper->getHandler('MenuItem');
+        $menuitems = $menuItemHandler->getAll($criteria);
+        //$count = $menuItemHandler->getCount($criteria);
+        //$menuitemr = getPageNav($count, $helper->getConfig('perpage', Constants::DEFAULT_PER_PAGE), $start, 'start');
+        //Show list
+        //include('../include/admin_header_tpl.php');
+        include('../include/menuitem_list_tpl.php');
+        break;
 }
 
-xoops_cp_footer();
-
-/**
- * 列表显示
- *
- * 
- * @return null
- */
-function listMenuitem() {
-	//获取参数
-	$start = getRequestVar('start', 'int', 0);
-	$criteria = new Criteria(null);
-	$criteria->setSort('weight');
-//	$criteria->setLimit(SIMPLEPAGE_PERPAGE);
-	//获取列表数据
-	/* @var $menuitemHandler SimplepageMenuitemHandler */
-	$menuitemHandler =& xoops_getmodulehandler('menuitem');
-	$menuitems = $menuitemHandler->getAll($criteria);
-//	$count = $menuitemHandler->getCount($criteria);
-//	$menuitemr = getPageNav($count, SIMPLEPAGE_PERPAGE, $start, 'start');
-	//显示列表
-//	include('../include/admin_header_tpl.php');
-	include('../include/menuitem_list_tpl.php');
-}
-
-/**
- * 显示添加/编辑界面
- *
- * @return null
- */
-function addeditMenuitem($menuitem = null) {
-	if ($menuitem == null) {
-		//取得参数
-		$menuitemId = getRequestVar('menuitemId', 'int', 0);
-		//取得数据
-		/* @var $menuitemHandler SimplepageMenuitemHandler */
-		$menuitemHandler =& xoops_getmodulehandler('menuitem');
-		$menuitem = $menuitemHandler->get($menuitemId);
-	}
-//	include('../include/admin_header_tpl.php');
-	include('../include/menuitem_form.php');
-}
-
-/**
- * 保存到数据库
- *
- * @return null
- */
-function saveMenuitem() {
-//	echo __FILE__.__LINE__;debugPrint($_POST);
-	$menuitemId = getRequestVar('menuitemId', 'int', 0);
-	/*@var $menuitemHandler SimplepageMenuitemHandler*/
-	$menuitemHandler =& xoops_getmodulehandler('menuitem');
-	/*@var $menuitem SimplepageMenuitem*/
-	$menuitem = $menuitemHandler->get($menuitemId);
-	$menuitem->setFormVars($_POST, '');
-//	$menuitem->setVar('target', )
-	//排序
-	if ($menuitem->isNew()) {
-		$menuitem->setVar('weight', time());
-	}
-	//插入数据库
-	if ($menuitemHandler->insert($menuitem)) {
-		redirect_header($_SERVER['PHP_SELF'], 2, _AD_SIMPLEPAGE_UPDATE_DATABASE_SUCCESS);
-	} else {
-		echo '<div class="error">'.$menuitem->getHtmlErrors().'</div>';
-		addeditMenuitem($menuitem);
-	}
-}
-
-/**
- * 显示删除警告
- *
- * @return null
- */
-function confirmDelete() {
-
-}
-
-/**
- * 从数据库删除
- *
- * @return null
- */
-function deleteMenuitem() {
-	$menuitemId = getRequestVar('menuitemId', 'int', null, 'Deleting object no exist.'
-		, $_SERVER['PHP_SELF'].'?op=list');
-	/*@var $menuitemHandler SimplepageMenuitemHandler*/
-	$menuitemHandler =& xoops_getmodulehandler('menuitem');
-	/*@var $menuitem SimplepageMenuitem*/
-	$menuitem = $menuitemHandler->get($menuitemId);
-	if (!$menuitem) {
-		$message = 'Deleting object no exist.';
-	} else {
-		$title = $menuitem->getVar('alias');
-		if ($menuitemHandler->delete($menuitem)) {
-			$message = 'Delete '.$title.' success.';
-		} else {
-			$message = '<font color="red">Delete '.$title.' fail.</font>';
-		}
-	}
-	redirect_header($_SERVER['PHP_SELF'].'?op=list', 3, $message);
-}
-
-/**
- * 执行排序
- *
- * @return null
- */
-function sortMenuitem() {
-//	echo __FILE__.__LINE__;debugPrint($_POST);
-	$menuOrder = getRequestVar('menuOrder', 'str', '');
-	$menuOrder = str_replace("sortable[]=", "", $menuOrder);
-	$order = explode('&', $menuOrder);
-//	echo __FILE__.__LINE__;debugPrint($order);
-	
-	//获取参数
-	$criteria = new Criteria(null);
-	$criteria->setSort('weight');
-	
-	//获取列表数据
-	/* @var $menuitemHandler SimplepageMenuitemHandler */
-	$menuitemHandler =& xoops_getmodulehandler('menuitem');
-	$menuitems = $menuitemHandler->getObjects($criteria, true);
-	
-	$message = '';
-	if ($menuitems) {
-		$weight = $first = reset($menuitems)->getVar('weight');
-		if ($weight == 0) echo __FILE__.__LINE__."0000000000000000";
-		$last = end($menuitems)->getVar('weight');
-		$interval = intval(($last - $first) / (count($menuitems) - 1));
-		/*
-		echo __FILE__.__LINE__;debugPrint(reset($menuitems));
-		echo __FILE__.__LINE__;debugPrint($weight, 'weight');
-		echo __FILE__.__LINE__;debugPrint($first, 'first');
-		echo __FILE__.__LINE__;debugPrint($last, 'last');
-		echo __FILE__.__LINE__;debugPrint($interval, 'interval');
-		*/
-		foreach ($order as $id) {			
-			$menuitems[$id]->setVar('weight', intval($weight));
-			if (!$menuitemHandler->insert($menuitems[$id])) $message .= $menuitemHandler->getErrors();
-//			echo __FILE__.__LINE__;debugPrint($weight);
-			$weight = $weight + $interval;
-		}
-	}
-	redirect_header($_SERVER['PHP_SELF'], 3, $message);
-}
-?>
+include __DIR__ . '/admin_footer.php';

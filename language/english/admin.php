@@ -22,7 +22,7 @@ define('_AD_SIMPLEPAGE_NOPAGE', 'No page');
 define('_AD_SIMPLEPAGE_UPDATE_DATABASE_SUCCESS', 'Successfully updated the database');
 define('_AD_SIMPLEPAGE_UPDATE_DATABASE_FAIL', '<div class="error">Failed to update the database</div>');
 
-//page.php
+//Page.php
 define('_AD_SIMPLEPAGE_PAGENAME_ALREADY_EXISTS', '<div class="error">The page ID already exists and cannot be repeated.</div>');
 
 //page_form.php
@@ -59,7 +59,7 @@ define('_AD_SIMPLEPAGE_NOTE', '
 	<li>Menu and breadcrumbs are automatically generated on the page</li>
 	<li>Edit page with online editor</li>
 	<li>Menu drag and drop sort</li>
-	<li>The layout of the page can be modified by modifying templates/simplepage_index.html </li>
+	<li>The layout of the page can be modified by modifying templates/simplepage_index.tpl </li>
 	<li>Modify the appearance of the page by modification of templates/simplepage.css </li>
 	<li>Cooperate clone Modules can be copied into different modules</li>
 </ul>

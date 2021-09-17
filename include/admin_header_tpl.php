@@ -7,7 +7,7 @@ background-color: yellow;
 padding: 10px;
 }
 .error{
-background-color:#CC3333;
+background-color: #CC3333;
 padding: 10px;
 }
 
@@ -18,20 +18,20 @@ padding: 10px;
 */
 .form-head{
 	background-color: #678FF4;
-	color:#FFFFFF;
-	padding:4px;
+	color: #FFFFFF;
+	padding: 4px;
 }
 .form-head a{
-	color:#FFFFFF;
+	color: #FFFFFF;
 }
-.form-head a:hoover{
-	color:#FF9900;
+.form-head a:hover{
+	color: #FF9900;
 }
 
 .button{
-	padding:2px 10px;
-	border:double #666666;
-	background-color:#CCCCCC;
+	padding: 2px 10px;
+	border: double #666666;
+	background-color: #CCCCCC;
 }
 
 .form-caption{
@@ -46,36 +46,36 @@ padding: 10px;
 }
 
 .pager{
-	text-align:right;
-	margin:15px;
+	text-align: right;
+	margin: 15px;
 }
 
 #nav{
-	/*float:left;*/
+	/*float: left;*/
 }
 #nav li{
-	display:inline;
-	color:#000000;
-	text-decoration:none;
-	/*padding:2px 10px;
-	border:double #666666;
-	width:97px;
-	height:22px;*/
-	text-align:center;
-	background-color:#ececec;
-	margin-left:20px;
+	display: inline;
+	color: #000000;
+	text-decoration: none;
+	/*padding: 2px 10px;
+	border: double #666666;
+	width: 97px;
+	height: 22px;*/
+	text-align: center;
+	background-color: #ececec;
+	margin-left: 20px;
 }
 </style>
 
 <div>
-<!--<img src="../images/simplepage_slogo.jpg" style="float: left;" />-->
+<!--<img src="../assets/images/simplepage_slogo.jpg" style="float: left;" />-->
 <ul id="nav">
-  <li><a href="../index.php" class="button" target="_blank">前台首页</a> </li>
-	<li><a href="page.php?op=add" class="button">添加页面</a> </li>
-  <li><a href="page.php?op=list" class="button">列出页面</a></li>
-	<li><a href="menuitem.php?op=add" class="button">添加菜单</a> </li>
-  <li><a href="menuitem.php?op=list" class="button">列出菜单</a></li>
+  <li><a href="../index.php" class="button" target="_blank">Go to Module</a></li>
+	<li><a href="page.php?op=add" class="button">Add Page</a></li>
+  <li><a href="page.php?op=list" class="button">Show Pages</a></li>
+	<li><a href="menuitem.php?op=add" class="button">Add Menu Item</a></li>
+  <li><a href="menuitem.php?op=list" class="button">Show Menu</a></li>
 </ul>
-<div style="clear: both;"></div>
+<div class="clear"></div>
 </div>
-<br />
+<br>

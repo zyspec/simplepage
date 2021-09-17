@@ -23,7 +23,7 @@ define('_AD_SIMPLEPAGE_NOPAGE', '沒有頁面');
 define('_AD_SIMPLEPAGE_UPDATE_DATABASE_SUCCESS', '更新數據庫成功');
 define('_AD_SIMPLEPAGE_UPDATE_DATABASE_FAIL', '<div class="error">更新數據庫成功失敗</div>');
 
-//page.php
+//Page.php
 define('_AD_SIMPLEPAGE_PAGENAME_ALREADY_EXISTS', '<div class="error">可能頁面標識已存在，不能重複。</div>');
 
 //page_form.php
@@ -60,7 +60,7 @@ define('_AD_SIMPLEPAGE_NOTE', '
 	<li>頁面自動生成菜單和麵包屑</li>
 	<li>使用在線編輯器編輯頁面</li>
 	<li>菜單拖放排序</li>
-	<li>通過修改 templates/simplepage_index.html 可以修改頁面的佈局</li>
+	<li>通過修改 templates/simplepage_index.tpl 可以修改頁面的佈局</li>
 	<li>通過修改 templates/simplepage.css 可以修改頁面的外觀</li>
 	<li>配合 clone 模塊可以複製成不同的模塊</li>
 </ul>

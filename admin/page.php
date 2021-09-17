@@ -1,155 +1,135 @@
 <?php
 /**
- * 管理页面
+ * Management page
  *
- * @copyright	xoops.com.cn
- * @author		bitshine <bitshine@gmail.com>
- * @since		1.00
- * @version		$Id$
- * @package		simplepage
+ * @package  \XoopsModules\Simplepage
+ * @subpackage  admin
+ * @copyright  xoops.com.cn
+ * @copyright  &copy; 2000-2021 {@link https://xoops.org XOOPS Project}
+ * @author  bitshine <bitshine@gmail.com>
+ * @author  XOOPS Modules Developement Team
  */
 
+use \Xmf\Request;
+use \XoopsModules\Simplepage\{
+    Constants,
+    Helper
+};
 
-require_once('../../../include/cp_header.php');
-include_once(XOOPS_ROOT_PATH."/Frameworks/art/functions.admin.php");
+/**
+ * @var Xmf\Module\Admin $adminObject
+ * @var XoopsModules\Simplepage\Helper $helper
+ * @var string $moduleDirName
+ * @var string $moduleDirNameUpper
+ * @var string[] $icons;
+ */
+require_once __DIR__ . '/admin_header.php';
+//require_once('../../../include/cp_header.php');
 require_once('../include/functions.php');
-require_once('../include/vars.php');
+//require_once('../include/vars.php');
 xoops_cp_header();
 
-$op = getRequestVar('op', 'str', 'list');
+$adminObject->displayNavigation(basename(__FILE__));
+
+$op = Request::getCmd('op', 'list');
 switch ($op) {
-	case 'add': //显示添加界面
-		loadModuleAdminMenu(1);
-		addeditPage();
+	case 'add': //Show add interface
+    case 'edit'://Show editing interface
+        $adminObject->addItemButton(_AD_SIMPLEPAGE_ADDPAGE, 'page.php?op=add', 'add');
+        $adminObject->displayButton('left');
+		//loadModuleAdminMenu(1);
+        $pageId = Request::getInt('pageId',0);
+		//addeditPage();
+        /** @var  $pageHandler  \XoopsModules\Simplepage\PageHandler */
+        $pageHandler = $helper->getHandler('Page');
+        $page        = $pageHandler->get($pageId);
+        //include('../include/admin_header_tpl.php');
+        include('../include/page_form.php');
 		break;
-	case 'edit': //显示编辑界面
-		loadModuleAdminMenu(1);
-		addeditPage();
-		break;
-	case 'save': //保存到数据库
-		savePage();
-		break;
-	case 'confirmDelete': //显示删除警告
-		confirmDelete();
-		break;
-	case 'delete': //从数据库删除
-		deletePage();
-		break;
-	case 'sort': //执行排序
-		sortPage();
-		break;
-	case 'generate': //生成页面
-		generatePage();
-		break;
-	case 'list': //列表显示
-	default:
-		loadModuleAdminMenu(1);
-		listPage();
-		break;
-}
-
-xoops_cp_footer();
-
-/**
- * 列表显示
- *
- * @return null
- */
-function listPage() {
-	//获取参数
-	$start = getRequestVar('start', 'int', 0);
-	$criteria = new Criteria(null);
-	$criteria->setLimit(SIMPLEPAGE_PERPAGE);
-	//获取列表数据
-	/* @var $pageHandler SimplepagePageHandler */
-	$pageHandler =& xoops_getmodulehandler('page');
-	$pages = $pageHandler->getAll($criteria);
-	$count = $pageHandler->getCount($criteria);
-	$pager = getPageNav($count, SIMPLEPAGE_PERPAGE, $start, 'start');
-	//显示列表
-//	include('../include/admin_header_tpl.php');
-	include('../include/page_list_tpl.php');
-}
-
-/**
- * 显示添加/编辑界面
- *
- * @return null
- */
-function addeditPage($page = null) {
-	if ($page == null) {
-		//取得参数
-		$pageId = getRequestVar('pageId', 'int', 0);
-		//取得数据
-		/* @var $pageHandler SimplepagePageHandler */
-		$pageHandler =& xoops_getmodulehandler('page');
-		$page = $pageHandler->get($pageId);
-	}
-//	include('../include/admin_header_tpl.php');
-	include('../include/page_form.php');
-}
-
-/**
- * 保存到数据库
- *
- * @return null
- */
-function savePage() {
-	$pageId = getRequestVar('pageId', 'int', 0);
-	/*@var $pageHandler SimplepagePageHandler*/
-	$pageHandler =& xoops_getmodulehandler('page');
-	/*@var $page SimplepagePage*/
-	$page = $pageHandler->get($pageId);
-	$page->setFormVars($_POST, '');
-	$myts = new MyTextSanitizer();
+	case 'save': //Save to database
+        $pageId = Request::getInt('pageId', 0);
+        /**  @var  $pageHandler  \XoopsModules\Simplepage\PageHandler */
+        $pageHandler = $helper->getHandler('Page');
+        /** @var $page \XoopsModules\Simplepage\Page */
+        $page = $pageHandler->get($pageId);
+        $page->setFormVars($_POST, '');
+        $myts = new \MyTextSanitizer();
 //	$page->setVar('content', $myts->htmlSpecialChars($myts->stripSlashesGPC($_POST['content'])));
-	$page->setVar('content', $_POST['content']);
-	$page->setVar('pageName', str_replace(' ', '', $page->getVar('pageName')));
-	//Todo：检查字符
-	//时间与排序
-	$time = time();
-	if ($page->isNew()) {
-		$page->setVar('created', $time);
-		$page->setVar('updated', 0);
-		$page->setVar('weight', $time);
-	} else {
-		$page->setVar('updated', $time);
-	}
-	//更新者
-	global $xoopsUser;
-	$page->setVar('updaterUid', $xoopsUser->uid());	
-	//插入数据库
-	if ($pageHandler->insert($page)) {
-		redirect_header($_SERVER['PHP_SELF'], 2, _AD_SIMPLEPAGE_UPDATE_DATABASE_SUCCESS);
-	} else {
-		echo _AD_SIMPLEPAGE_UPDATE_DATABASE_FAIL._AD_SIMPLEPAGE_PAGENAME_ALREADY_EXISTS;
-//		echo '<div class="error">'.$page->getHtmlErrors().'</div>';
-		addeditPage($page);
-	}
+        $page->setVar('content', $_POST['content']);
+        $page->setVar('pageName', str_replace(' ', '', $page->getVar('pageName')));
+        /** @todo  Check character */
+        //Time and order
+        $time = time();
+        if ($page->isNew()) {
+            $page->setVar('created', $time);
+            $page->setVar('updated', 0);
+            $page->setVar('weight', $time);
+        } else {
+            $page->setVar('updated', $time);
+        }
+        //updater
+        $page->setVar('updaterUid', $GLOBALS['xoopsUser']->uid());
+        //Insert into the database
+        if ($pageHandler->insert($page)) {
+            redirect_header($_SERVER['SCRIPT_NAME'], Constants::REDIRECT_DELAY_MEDIUM, _AD_SIMPLEPAGE_UPDATE_DATABASE_SUCCESS);
+        } else {
+            //echo _AD_SIMPLEPAGE_UPDATE_DATABASE_FAIL._AD_SIMPLEPAGE_PAGENAME_ALREADY_EXISTS;
+            //echo '<div class="error">'.$page->getHtmlErrors().'</div>';
+            //addeditPage($page);
+            redirect_header($_SERVER['SCRIPT_NAME'] . '?op=add&menuitemId=' . $pageId, Constants::REDIRECT_DELAY_MEDIUM, _AD_SIMPLEPAGE_UPDATE_DATABASE_FAIL . _AD_SIMPLEPAGE_PAGENAME_ALREADY_EXISTS);
+        }
+        break;
+	case 'confirmDelete': //Show delete warning
+		//confirmDelete();
+		break;
+	case 'delete': //Delete from database
+        if (!Request::hasVar('pageId')) {
+            redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, 'Deleting object no exist.');
+        }
+        $helper = Helper::getInstance();
+        $pageId = Request::getInt('menuitemId', null);
+        /**  @var  $pageHandler \XoopsModules\Simplepage\PageHandler */
+        $pageHandler = $helper->getHandler('Page');
+        /**  @var  $page \XoopsModules\Simplepage\Page */
+        $page = $pageHandler->get($pageId);
+        if (!$page) {
+            $message = 'Deleting object no exist.';
+        } else {
+            $title = $page->getVar('alias');
+            if ($pageHandler->delete($page)) {
+                $message = 'Delete '.$title.' success.';
+            } else {
+                $message = '<span class="red">' . _DELETE . $title . ' fail.</spanfont>';
+            }
+        }
+        redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, $message);
+        break;
+	case 'sort': //Perform sorting
+		//sortPage();
+		break;
+	case 'generate': //Generate page
+		//generatePage();
+		break;
+	case 'list': //List display
+	default:
+        $perPage = $helper->getConfig('perpage', Constants::DEFAULT_PER_PAGE);
+        $adminObject->addItemButton(_AD_SIMPLEPAGE_ADDPAGE, 'page.php?op=add', 'add');
+        $adminObject->displayButton('left');
+		//loadModuleAdminMenu(1);
+        //Get parameters
+        $start = Request::getInt('start', 0);
+        $criteria = new Criteria(null);
+        $criteria->setLimit($perPage);
+        //Get list data
+        /** @var  $pageHandler  \XoopsModules\Simplepage\PageHandler */
+        $pageHandler = $helper->getHandler('Page');
+        $pages = $pageHandler->getAll($criteria);
+        $count = $pageHandler->getCount($criteria);
+        $pager = getPageNav($count, $perPage, $start, 'start');
+        //Show list
+        //include('../include/admin_header_tpl.php');
+        include('../include/page_list_tpl.php');
+		break;
 }
 
-/**
- * 从数据库删除
- *
- * @return null
- */
-function deletePage() {
-	$pageId = getRequestVar('pageId', 'int', null, 'Deleting object no exist.'
-		, $_SERVER['PHP_SELF'].'?op=list');
-	/*@var $pageHandler SimplepagePageHandler*/
-	$pageHandler =& xoops_getmodulehandler('page');
-	/*@var $page SimplepagePage*/
-	$page = $pageHandler->get($pageId);
-	if (!$page) {
-		$message = 'Deleting object no exist.';
-	} else {
-		$title = $page->getVar('alias');
-		if ($pageHandler->delete($page)) {
-			$message = 'Delete '.$title.' success.';
-		} else {
-			$message = '<font color="red">Delete '.$title.' fail.</font>';
-		}
-	}
-	redirect_header($_SERVER['PHP_SELF'].'?op=list', 3, $message);
-}
-?>
+include_once __DIR__ . '/admin_footer.php';

@@ -1,16 +1,16 @@
 <div class="breadcrumb"><{$breadcrumb}></div>
 <div id="simplepage">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<table class="width100 bnone" style="border-spacing: 0px; padding: 0px;">
   <tr>
     <td id="simplepageLeftColumn">
-		<!--菜单-->
+		<!-- menu -->
 		<ul id='simplepageNav'>
 		<{foreach from=$menuitems item=item}>
 			<{if $item->getVar('link') == $page->getVar('pageName')}>
-				<!--当前页面的菜单项-->
+				<!-- Menu item of current page -->
 				<li id="currentMenuItem"><a href="<{$item->link()}>" target="<{$item->target()}>"><{$item->title()}></a></li>
 			<{else}>
-				<!--非当前页面的菜单项-->
+				<!-- Menu items that are not on the current page -->
 				<li class="menuitem"><a href="<{$item->link()}>" target="<{$item->target()}>"><{$item->title()}></a></li>
 			<{/if}>
 		<{/foreach}>
@@ -18,11 +18,11 @@
 		</td>
     
 		<td id="simplepageContent">
-		<!--标题-->
+		<!-- title -->
 		<{if $page->getVar('isDisplayTitle')}>
 			<h1><{$page->getVar('title')}></h1>
 		<{/if}>
-		<!--内容-->
+		<!-- content -->
 		<{$page->getVar('content')}>	
 		</td>
   </tr>

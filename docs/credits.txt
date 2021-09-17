@@ -1,0 +1,7 @@
+Credits
+===============
+
+Originally developed by:
+bitshine <bitshine@gmail.com>
+
+Other contributors: Mamba, ZySpec, Geekwright

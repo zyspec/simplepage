@@ -26,7 +26,7 @@ padding: 10px;
 .form-head a{
 	color:#FFFFFF;
 }
-.form-head a:hoover{
+.form-head a:hover{
 	color:#FF9900;
 }
 
@@ -68,22 +68,13 @@ padding: 10px;
 	margin-left:20px;
 }
 </style>
-<!--header-->
-<div>
-<!--<img src="../images/simplepage_slogo.jpg" style="float: left;" />-->
-<ul id="nav">
-	<li><a href="page.php?op=add" class="button"><?php echo _AD_SIMPLEPAGE_ADDPAGE; ?></a> </li>
-</ul>
-<div style="clear: both;"></div>
-</div>
-<br />
 
-<!-- 用于发送删除的ID start -->
-<form name="deletesel" action="<?php echo $_SERVER['PHP_SELF'].'?op=delete'; ?>" method="post">
-<input name="pageId" type="hidden" value="" />
+<!-- Used to send delete ID start -->
+<form name="deletesel" action="<?php echo $_SERVER['SCRIPT_NAME'].'?op=delete'; ?>" method="post">
+<input name="pageId" type="hidden" value="">
 </form>
 
-<script language="javascript" type="text/javascript">
+<script>
 <!--
 function confirmDelete(id) {
 	if (confirm('Do you confirm to delete?')) {
@@ -95,17 +86,17 @@ function confirmDelete(id) {
 </script>
   <!-- 用于发送删除的ID end -->
 
-<table width="90%" border="1" align="center" cellpadding="3" cellspacing="0">
+<table class="outer width90 border center pad3" style="margin: 0">
   <tr class="form-head">
-		<td><div align="center">#</div></td>
-		<td><div align="center"><?php echo _AD_SIMPLEPAGE_PUBLISH; ?></div></td>
-    <td><div align="center"><?php echo _AD_SIMPLEPAGE_TITLE; ?></div></td>
-    <td><div align="center"><?php echo _AD_SIMPLEPAGE_ISDISPLAYTITLE; ?></div></td>
-    <td><div align="center"><?php echo _AD_SIMPLEPAGE_PAGEIDENTIFIER; ?></div></td>
-		<td><div align="center"><?php echo _AD_SIMPLEPAGE_TITLE; ?></div></td>
-    <td><div align="center"><?php echo _AD_SIMPLEPAGE_CREATETIME; ?></div></td>
-    <td><div align="center"><?php echo _AD_SIMPLEPAGE_LASTMODIFY; ?></div></td>		
-    <td><div align="center" width="120"><?php echo _AD_SIMPLEPAGE_MODIFYUSER; ?></div></td>
+	<td><div class="center">#</div></td>
+	<td><div class="center"><?php echo _AD_SIMPLEPAGE_PUBLISH; ?></div></td>
+    <td><div class="center"><?php echo _AD_SIMPLEPAGE_TITLE; ?></div></td>
+    <td><div class="center"><?php echo _AD_SIMPLEPAGE_ISDISPLAYTITLE; ?></div></td>
+    <td><div class="center"><?php echo _AD_SIMPLEPAGE_PAGEIDENTIFIER; ?></div></td>
+    <td><div class="center"><?php echo _AD_SIMPLEPAGE_CREATETIME; ?></div></td>
+    <td><div class="center"><?php echo _AD_SIMPLEPAGE_LASTMODIFY; ?></div></td>
+    <td><div class="center width15"><?php echo _AD_SIMPLEPAGE_MODIFYUSER; ?></div></td>
+    <td><div class="center"><?php echo _AD_SIMPLEPAGE_ACTION; ?></div></td>
   </tr>
 <?php
 $cssClass = 'odd';
@@ -121,19 +112,19 @@ if ($pages) {
 	echo $cssClass;
 	?>
 	">
-	<td><div align="center"><?php echo $page->getVar('pageId'); ?></div></td>
-	<td><div align="center"><img src="../images/<?php echo $page->getVar('isPublished'); ?>.png" /></div></td>
-	<td><div align="left"><?php echo $page->getVar('title'); ?></div></td>
-	<td><div align="center"><img src="../images/<?php echo $page->getVar('isDisplayTitle'); ?>.png" /></div></td>
-	<td><div align="left"><?php echo $page->getVar('pageName'); ?></div></td>
-	<td><div align="center"><?php echo $page->created(); ?></div></td>
-	<td><div align="center"><?php echo $page->updated(); ?></div></td>
-	<td><div align="center"><?php echo $page->updater(); ?></div></td>
-	<td align="center"><div style="width: 120px;">
-		<a href="<?php echo SIMPLEPAGE_URL; ?>/index.php?page=<?php echo $page->getVar('pageName'); ?>" target="_blank"><?php echo _AD_SIMPLEPAGE_FRONT; ?></a> | 
-		<a href="<?php echo $_SERVER['PHP_SELF']; ?>?op=edit&amp;pageId=<?php echo $page->getVar('pageId'); ?>"><?php echo _AD_SIMPLEPAGE_EDIT; ?></a> |
-		<a href="#" id="<?php echo $page->getVar('pageId'); ?>" onclick="javascript:confirmDelete(this.id);"><?php echo _AD_SIMPLEPAGE_DELETE; ?></a>
-	</div></td>
+	<td><div class="center"><?php echo $page->getVar('pageId'); ?></div></td>
+	<td><div class="center"><img src="../assets/images/<?php echo $page->getVar('isPublished'); ?>.png" /></div></td>
+	<td><div class="left"><?php echo $page->getVar('title'); ?></div></td>
+	<td><div class="center"><img src="../assets/images/<?php echo $page->getVar('isDisplayTitle'); ?>.png" /></div></td>
+	<td><div class="left"><?php echo $page->getVar('pageName'); ?></div></td>
+	<td><div class="center"><?php echo $page->created(); ?></div></td>
+	<td><div class="center"><?php echo $page->updated(); ?></div></td>
+	<td><div class="center"><?php echo $page->updater(); ?></div></td>
+	<td class="center">
+		<a href="<?php echo $helper->url('index.php?page=' . $page->getVar('pageName')); ?>" target="_blank"><?php echo _AD_SIMPLEPAGE_FRONT; ?></a> |
+		<a href="<?php echo $_SERVER['SCRIPT_NAME']; ?>?op=edit&amp;pageId=<?php echo $page->getVar('pageId'); ?>"><?php echo _AD_SIMPLEPAGE_EDIT; ?></a> |
+		<a href="#" id="<?php echo $page->getVar('pageId'); ?>" onclick="confirmDelete(this.id);"><?php echo _AD_SIMPLEPAGE_DELETE; ?></a>
+	</td>
 	</tr>
 <?php }
 }	else { ?>
