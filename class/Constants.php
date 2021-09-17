@@ -64,7 +64,7 @@ interface Constants
     /**
      * Default Thumbnail widths
      */
-    const DEFAULT_THUMB_WIDTHS = [150, 400];
+    const DEFAULT_THUMB_WIDTH = 150;
     /**
      * default order
      */
