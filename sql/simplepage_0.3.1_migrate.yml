@@ -1,0 +1,71 @@
+simplepage_page:
+  options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8'
+  columns:
+    -
+      name: pageId
+      attributes: ' smallint(3) unsigned  NOT NULL auto_increment'
+    -
+      name: title
+      attributes: ' varchar(255) '
+    -
+      name: content
+      attributes: ' text  NOT NULL '
+    -
+      name: pageName
+      attributes: ' varchar(32)  NOT NULL '
+    -
+      name: templateId
+      attributes: ' smallint(3) unsigned  NOT NULL  DEFAULT ''0'' '
+    -
+      name: isDisplayTitle
+      attributes: ' tinyint(1) unsigned  NOT NULL '
+    -
+      name: commentable
+      attributes: ' tinyint(1) unsigned  NOT NULL '
+    -
+      name: created
+      attributes: ' int(11) unsigned  NOT NULL '
+    -
+      name: updated
+      attributes: ' int(11) unsigned  NOT NULL '
+    -
+      name: updaterUid
+      attributes: ' mediumint(8) unsigned  NOT NULL '
+    -
+      name: weight
+      attributes: ' int(11) unsigned  NOT NULL '
+    -
+      name: isPublished
+      attributes: ' tinyint(1)  NOT NULL '
+  keys:
+    pageName:
+      columns: pageName
+      unique: true
+    PRIMARY:
+      columns: pageId
+      unique: true
+simplepage_menuitem:
+  options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8'
+  columns:
+    -
+      name: menuitemId
+      attributes: ' smallint(3) unsigned  NOT NULL auto_increment'
+    -
+      name: title
+      attributes: ' varchar(32)  NOT NULL '
+    -
+      name: link
+      attributes: ' varchar(255)  NOT NULL '
+    -
+      name: target
+      attributes: ' varchar(7)  NOT NULL '
+    -
+      name: templateId
+      attributes: ' smallint(3) unsigned  NOT NULL  DEFAULT ''0'' '
+    -
+      name: weight
+      attributes: ' int(11) unsigned  NOT NULL '
+  keys:
+    PRIMARY:
+      columns: menuitemId
+      unique: true
