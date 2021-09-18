@@ -75,6 +75,7 @@ return (object)[
         '/class/include/index.html',
         '/include/jquery1.1.2.js',
         '/include/jquery-1.2.1.pack.js',
+        '/include/page_list_tpl.php',
         '/include/vars.php',
         '/index.html',
         '/language/index.html',

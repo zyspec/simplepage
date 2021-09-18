@@ -45,11 +45,11 @@ define('_AD_SIMPLEPAGE_SORTTHEMENU', 'Menu sort');
 define('_AD_SIMPLEPAGE_DRAP_AND_DROP_THE_MENUITEM', 'Please drag the menu items below to sort');
 define('_AD_SIMPLEPAGE_SUBMITNEWORDER', 'Submit order');
 
-//page_list_tpl.php
+//simplepage_page_list.tpl
 define('_AD_SIMPLEPAGE_PAGEIDENTIFIER', 'Page ID');
 define('_AD_SIMPLEPAGE_CREATETIME', 'Creation time');
 define('_AD_SIMPLEPAGE_LASTMODIFY', 'Recently updated');
-define('_AD_SIMPLEPAGE_MODIFYUSER', 'updater');
+define('_AD_SIMPLEPAGE_MODIFYUSER', 'Author');
 define('_AD_SIMPLEPAGE_FRONT', 'Frontside');
 
 //admin/index.php

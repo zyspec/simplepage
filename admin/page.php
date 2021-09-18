@@ -24,9 +24,7 @@ use \XoopsModules\Simplepage\{
  * @var string[] $icons;
  */
 require_once __DIR__ . '/admin_header.php';
-//require_once('../../../include/cp_header.php');
 require_once('../include/functions.php');
-//require_once('../include/vars.php');
 xoops_cp_header();
 
 $adminObject->displayNavigation(basename(__FILE__));
@@ -128,7 +126,29 @@ switch ($op) {
         $pager = getPageNav($count, $perPage, $start, 'start');
         //Show list
         //include('../include/admin_header_tpl.php');
-        include('../include/page_list_tpl.php');
+
+        $pagesArray = [];
+        foreach ($pages as $page) {
+            $pageArray = $page->getValues();
+            $pageArray['isPubIcon'] = "../assets/images/" . $page->getVar('isPublished') . '.png';
+            $pageArray['isPubIconAlt'] = '';
+            $pageArray['isDispIcon'] = "../assets/images/" . $page->getVar('isDisplayTitle') . '.png';
+            $pageArray['isDispIconAlt'] = '';
+            $pageArray['created'] = $page->created();
+            $pageArray['updated'] = $page->updated();
+            $pageArray['updater'] = $page->updater();
+            $pagesArray[] = $pageArray;
+        }
+
+        $GLOBALS['xoopsTpl']->assign([
+            'thisUrl'    => $_SERVER['SCRIPT_NAME'],
+            'indexUrl'   => $helper->url('index.php'),
+            'pagesArray' => $pagesArray,
+            'pager'      => $pager
+
+        ]);
+        echo $GLOBALS['xoopsTpl']->fetch($helper->path('templates/admin/simplepage_page_list.tpl'));
+        //include('../include/page_list_tpl.php');
 		break;
 }
 

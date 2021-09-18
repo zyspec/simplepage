@@ -7,16 +7,17 @@
 - move hard coded language strings to language files
 - add support for Smartclone module
 - add install/update/uninstall logic
-- add Constants class vars to replace hard coded values throughout module
 - remove CSS from templates, put into ./assets/CSS folder
 - move javascript from ./include to ./assets/js folder
 - replace ./include/interface.js with 'modern' alternative
 - add admin help page
 - move dB inserted items from ./sql/mysql.sql to .yml test data
+- add image upload support for pages (in progress)
 <br><b>Completed</b>
 - converted to XOOPS 2.5.x Admin GUI (zyspec)
 - namespaces, autoloading (zyspec)
 - added XOOPS Common module classes (zyspec)
+- added Constants class vars to replace hard coded values throughout module
 - added English translation (zyspec)
 - use Xmf\Request to sanitize input (zyspec)
 - minor bug fixes (zyspec)

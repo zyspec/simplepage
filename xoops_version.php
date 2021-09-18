@@ -7,14 +7,14 @@
  * @author  bitshine <bitshine@gmail.com>
  */
 
-use \XoopsModules\Simplepage\Constants;
+use XoopsModules\Simplepage\Constants;
 
 /**
  * @var array $modversion
  */
 include __DIR__ . '/preloads/autoloader.php';
 
-$moduleDirName = basename(__DIR__);
+$moduleDirName      = basename(__DIR__);
 $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
 xoops_loadLanguage('common', $moduleDirName);
@@ -48,14 +48,9 @@ $modversion['tables'] = [
 // Templates
 // front page
 $modversion['templates'] = [
-    [
-	    'file'        => 'simplepage_index.tpl',
-	    'description' => ''
-    ],
-    [
-        'file'        => 'simplepage_common_breadcrumb.tpl',
-        'description' => ''
-    ],
+    ['file' => 'simplepage_index.tpl', 'description' => ''],
+    ['file' => 'simplepage_common_breadcrumb.tpl', 'description' => ''],
+    ['file' => 'admin/simplepage_page_list.tpl', 'description' => '']
 ];
 
 // Main Menu
