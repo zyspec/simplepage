@@ -1,0 +1,28 @@
+-
+    menuitemId: '1'
+    title: 'Introduction'
+    link: 'Simplepage'
+    target: ''
+    templateId: '0'
+    weight: '463590683'
+-
+    menuitemId: '2'
+    title: 'Main functions of the module'
+    link: 'feature'
+    target: ''
+    templateId: '0'
+    weight: '708289858'
+-
+    menuitemId: '5'
+    title: 'Post a post'
+    link: 'https://xoops.org/modules/newbb/index.php'
+    target: '_blank'
+    templateId: '0'
+    weight: '1197688208'
+-
+    menuitemId: '8'
+    title: 'Installation Notes'
+    link: 'install'
+    target: ''
+    templateId: '0'
+    weight: '952989033'

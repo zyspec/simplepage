@@ -11,7 +11,6 @@
 - move javascript from ./include to ./assets/js folder
 - replace ./include/interface.js with 'modern' alternative
 - add admin help page
-- move dB inserted items from ./sql/mysql.sql to .yml test data
 - add image upload support for pages (in progress)
 <br><b>Completed</b>
 - converted to XOOPS 2.5.x Admin GUI (zyspec)
@@ -28,6 +27,7 @@
 - change vars to PSRx camelCase
 - added ./docs (changelog.txt, install.txt, license.txt, credits.txt)
 - convert admin routines (page.php & menuitem.php) to remove function calls
+- moved dB inserted items from ./sql/mysql.sql to .yml test data
 
 <h5>0.3.1 [NOT RELEASED]</h5>
 <hr>
