@@ -42,7 +42,12 @@ switch ($op) {
         $pageHandler = $helper->getHandler('Page');
         $page        = $pageHandler->get($pageId);
         //include('../include/admin_header_tpl.php');
-        include('../include/page_form.php');
+        require_once(XOOPS_ROOT_PATH.'/class/xoopsformloader.php');
+        $formTitle = $page->isNew()? _AD_SIMPLEPAGE_ADDPAGE : _AD_SIMPLEPAGE_EDITPAGE;
+        $form = new \XoopsThemeForm($formTitle, 'pageform', $_SERVER['SCRIPT_NAME'], 'post');
+        $page->getFormItems($form);
+        $form->display();
+        //include('../include/page_form.php');
 		break;
 	case 'save': //Save to database
         $pageId = Request::getInt('pageId', 0);
@@ -51,8 +56,7 @@ switch ($op) {
         /** @var $page \XoopsModules\Simplepage\Page */
         $page = $pageHandler->get($pageId);
         $page->setFormVars($_POST, '');
-        $myts = new \MyTextSanitizer();
-//	$page->setVar('content', $myts->htmlSpecialChars($myts->stripSlashesGPC($_POST['content'])));
+        //$page->setVar('content', $myts->htmlSpecialChars($myts->stripSlashesGPC($_POST['content'])));
         $page->setVar('content', $_POST['content']);
         $page->setVar('pageName', str_replace(' ', '', $page->getVar('pageName')));
         /** @todo  Check character */
@@ -84,7 +88,6 @@ switch ($op) {
         if (!Request::hasVar('pageId')) {
             redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, 'Deleting object no exist.');
         }
-        $helper = Helper::getInstance();
         $pageId = Request::getInt('menuitemId', null);
         /**  @var  $pageHandler \XoopsModules\Simplepage\PageHandler */
         $pageHandler = $helper->getHandler('Page');
@@ -97,7 +100,7 @@ switch ($op) {
             if ($pageHandler->delete($page)) {
                 $message = 'Delete '.$title.' success.';
             } else {
-                $message = '<span class="red">' . _DELETE . $title . ' fail.</spanfont>';
+                $message = '<span class="red">' . _DELETE . $title . ' failed.</spanfont>';
             }
         }
         redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, $message);
