@@ -24,7 +24,7 @@ use \XoopsModules\Simplepage\{
  * @var string[] $icons;
  */
 require_once __DIR__ . '/admin_header.php';
-require_once('../include/functions.php');
+require_once '../include/functions.php';
 xoops_cp_header();
 
 $adminObject->displayNavigation(basename(__FILE__));
@@ -88,7 +88,7 @@ switch ($op) {
         if (!Request::hasVar('pageId')) {
             redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, 'Deleting object no exist.');
         }
-        $pageId = Request::getInt('menuitemId', null);
+        $pageId = Request::getInt('pageId', null);
         /**  @var  $pageHandler \XoopsModules\Simplepage\PageHandler */
         $pageHandler = $helper->getHandler('Page');
         /**  @var  $page \XoopsModules\Simplepage\Page */

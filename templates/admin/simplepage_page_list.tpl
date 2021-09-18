@@ -53,6 +53,7 @@
 
 <!-- Send delete ID start -->
 <form name="deletesel" action="<{$thisUrl}>" method="post">
+<input name="op" type="hidden" value="delete">
 <input name="pageId" type="hidden" value="">
 </form>
 
