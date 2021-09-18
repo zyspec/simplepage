@@ -14,12 +14,12 @@ use \XoopsModules\Simplepage\{
     Helper
 };
 
-require_once('../../mainfile.php');
-require_once(XOOPS_ROOT_PATH.'/modules/simplepage/include/functions.php');
-//require_once(XOOPS_ROOT_PATH.'/modules/simplepage/include/vars.php');
+include __DIR__ . '/preloads/autoloader.php';
+require_once dirname(__DIR__, 2) . '/mainfile.php';
+require_once XOOPS_ROOT_PATH . '/modules/simplepage/include/functions.php';
 
 $xoopsOption['template_main'] = 'simplepage_index.tpl';
-require('../../header.php');
+require dirname(__DIR__, 2) . '/header.php';
 
 $helper = Helper::getInstance();
 
