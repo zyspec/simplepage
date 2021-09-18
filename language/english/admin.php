@@ -10,7 +10,8 @@
 
 //public
 define('_AD_SIMPLEPAGE_TITLE', 'Title');
-define('_AD_SIMPLEPAGE_PAGENAME', ' Page shortcode<br>English alphanumeric and underscore, page shortcuts must be unique.');
+define('_AD_SIMPLEPAGE_PAGENAME', 'Page shortcode');
+define('_AD_SIMPLEPAGE_PAGENAME_DESC', 'English alphanumeric and underscore, page shortcuts must be unique.');
 define('_AD_SIMPLEPAGE_ISDISPLAYTITLE', 'Show title');
 define('_AD_SIMPLEPAGE_CONTENT', 'Page content');
 define('_AD_SIMPLEPAGE_ISPUBLISHED', 'Whether to publish');

@@ -42,7 +42,12 @@ switch ($op) {
         $pageHandler = $helper->getHandler('Page');
         $page        = $pageHandler->get($pageId);
         //include('../include/admin_header_tpl.php');
-        include('../include/page_form.php');
+        require_once(XOOPS_ROOT_PATH.'/class/xoopsformloader.php');
+        $formTitle = $page->isNew()? _AD_SIMPLEPAGE_ADDPAGE : _AD_SIMPLEPAGE_EDITPAGE;
+        $form = new XoopsThemeForm($formTitle, 'pageform', $_SERVER['SCRIPT_NAME'], 'post');
+        $page->getFormItems($form);
+        $form->display();
+        //include('../include/page_form.php');
 		break;
 	case 'save': //Save to database
         $pageId = Request::getInt('pageId', 0);

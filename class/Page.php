@@ -72,4 +72,42 @@ class Page extends \XoopsObject
     {
 		return $GLOBALS['xoopsUser']->getUnameFromId($this->getVar('updaterUid'), $usereal);
 	}
+
+    /**
+     * @param  \XoopsThemeForm $form  a {@see \XoopsThemeForm} object passed-by-reference
+     * @return  void
+     */
+    public function getFormItems(&$form)
+    {
+        require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+        $form->addElement(new \XoopsFormHidden('op', 'save'));
+        $form->addElement(new \XoopsFormHidden('pageId', $this->getVar('pageId')));
+        //title
+        $form->addElement(new \XoopsFormText(_AD_SIMPLEPAGE_TITLE, 'title', 32, 64, $this->getVar('title')), true);
+        //pageName
+        $pageName = new \XoopsFormText(_AD_SIMPLEPAGE_PAGENAME, 'pageName', 32, 64, $this->getVar('pageName'));
+        $pageName->setDescription(_AD_SIMPLEPAGE_PAGENAME_DESC);
+        $form->addElement($pageName, true);
+        //display title or not
+        $isDisplayTitle = $this->getVar('isDisplayTitle');
+        $isDisplayTitle = !empty($isDisplayTitle)? $isDisplayTitle : 1; //default
+        $form->addElement(new \XoopsFormRadioYN(_AD_SIMPLEPAGE_ISDISPLAYTITLE, 'isDisplayTitle', $isDisplayTitle, _YES, _NO), true);
+        //selectEditor
+        //$options['editor'] = 'fckeditor'; //ezsky hack (ezskyyoung@gmail.com)
+        //$form->addElement(new XoopsFormDhtmlTextArea(_AD_SIMPLEPAGE_CONTENT, 'content', $this->getVar('content', 'e'),'','','',$options), true);
+        $form->addElement(new \XoopsFormDhtmlTextArea(_AD_SIMPLEPAGE_CONTENT, 'content', $this->getVar('content', 'e'),25,null,'',null), true);
+
+        //published or draft
+        $isPublished = $this->getVar('isPublished');
+        $isPublished = !empty($isPublished)? $isPublished : 1; //default
+        $form->addElement(new \XoopsFormRadioYN(_AD_SIMPLEPAGE_ISPUBLISHED, 'isPublished', $isPublished, _AD_SIMPLEPAGE_PUBLISH, _AD_SIMPLEPAGE_DRAFT), true);
+
+        //submit
+        $buttonTray = new \XoopsFormElementTray('');
+        $buttonTray->addElement(new \XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
+        $cancelButton = new \XoopsFormButton('', 'cancel', _CANCEL, 'button');
+        $cancelButton->setExtra('onclick="history.go(-1);"');
+        $buttonTray->addElement($cancelButton);
+        $form->addElement($buttonTray);
+    }
 }
