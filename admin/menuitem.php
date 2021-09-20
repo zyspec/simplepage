@@ -13,7 +13,8 @@
 use \Xmf\Request;
 use \XoopsModules\Simplepage\{
     Constants,
-    Helper
+    Helper,
+    Utility
 };
 
 /**
@@ -24,9 +25,8 @@ use \XoopsModules\Simplepage\{
  * @var string[] $icons;
  */
 require_once __DIR__ . '/admin_header.php';
+//require_once dirname(__DIR__) . '/include/functions.php';
 
-require_once('../include/functions.php');
-//require_once('../include/vars.php');
 xoops_cp_header();
 
 $adminObject->displayNavigation(basename(__FILE__));
@@ -37,14 +37,30 @@ switch ($op) {
 	case 'edit': //Show editing interface
         $adminObject->addItemButton(_AD_SIMPLEPAGE_ADDMENUITEM, 'menuitem.php?op=add', 'add');
         $adminObject->displayButton('left');
-        $menuitemId = Request::getInt('menuitemId', 0);
+        $menuitemId = Request::getInt('myId', 0);
         //Get data
         /** @var  $menuItemHandler  \XoopsModules\Simplepage\MenuItemHandler */
         $menuItemHandler = $helper->getHandler('MenuItem');
         $menuitem        = $menuItemHandler->get($menuitemId);
-        //include('../include/admin_header_tpl.php');
-        include('../include/menuitem_form.php');
-        break;
+        // add the javascript
+        $GLOBALS['xoTheme']->addScript('', [], '
+            function changeLink() {
+	            document.getElementById("link").value = document.getElementById("page").value;
+            }
+        ');
+        require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+        $formTitle = $menuitem->isNew()? _AD_SIMPLEPAGE_ADDMENUITEM : _AD_SIMPLEPAGE_EDITMENUITEM;
+        $form = new \XoopsThemeForm($formTitle, 'menuitemForm', $_SERVER['SCRIPT_NAME'], 'post');
+        $menuitem->getFormItems($form);
+        $form->display();
+        //echo "<!--\n"
+        //    . "<script>\n"
+        //   . "function changeLink() {\n"
+	    //   . "    document.getElementById(\"link\").value = document.getElementById(\"page\").value;\n"
+        //   . "}\n"
+        //   . "</script>\n"
+        //   . "-->\n";
+    break;
 	case 'save': //Save to database
         $menuitemId = Request::getInt('menuitemId', 0);
         /** @var $menuItemHandler \XoopsModules\Simplepage\MenuItemHandler */
@@ -70,12 +86,12 @@ switch ($op) {
 		break;
 	case 'delete': //Delete from database
 		//deleteMenuitem();
-        if (!Request::hasVar('menuitemId')) {
+        if (!Request::hasVar('myId')) {
             redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, 'Deleting object no exist.');
         }
         /** @var Helper $helper */
         $helper = Helper::getInstance();
-        $menuitemId = Request::getInt('menuitemId', null);
+        $menuitemId = Request::getInt('myId', null);
         /** @var $menuItemHandler \XoopsModules\Simplepage\MenuItemHandler */
         $menuItemHandler = $helper->getHandler('MenuItem');
         /** @var $menuitem \XoopsModules\Simplepage\MenuItem */
@@ -94,8 +110,7 @@ switch ($op) {
         break;
 	case 'sort': //Perform sorting
         $menuOrder = Request::getString('menuOrder', '');
-        $menuOrder = str_replace("sortable[]=", "", $menuOrder);
-        $order = explode('&', $menuOrder);
+        $order = explode(',', $menuOrder);
 
         //Get parameters
         $criteria = new \Criteria('', '');
@@ -104,18 +119,18 @@ switch ($op) {
         //Get list data
         /** @var $menuItemHandler XoopsModules\Simplepage\MenuItemHandler */
         $menuItemHandler = $helper->getHandler('MenuItem');
-        $menuitems = $menuItemHandler->getObjects($criteria, true);
+        $menuitems       = $menuItemHandler->getObjects($criteria, true);
 
-        $message = '';
+        $message = _AD_SIMPLEPAGE_MENU_SORTED;
         if ($menuitems) {
             $weight = $first = reset($menuitems)->getVar('weight');
-            if ($weight == 0) echo __FILE__.__LINE__."0000000000000000";
+            if (0 == $weight) echo __FILE__.__LINE__."0000000000000000";
             $last = end($menuitems)->getVar('weight');
             $interval = intval(($last - $first) / (count($menuitems) - 1));
             foreach ($order as $id) {
                 $menuitems[$id]->setVar('weight', intval($weight));
                 if (!$menuItemHandler->insert($menuitems[$id])) $message .= $menuItemHandler->getErrors();
-                //echo __FILE__.__LINE__;debugPrint($weight);
+                //\Xmf\Debug::dump($weight);
                 $weight = $weight + $interval;
             }
         }
@@ -126,6 +141,7 @@ switch ($op) {
 		break;
 	case 'list': //List display
 	default:
+        $perPage = $helper->getConfig('perpage', Constants::DEFAULT_PER_PAGE);
 		//listMenuitem();
         $adminObject->addItemButton(_AD_SIMPLEPAGE_ADDMENUITEM, 'menuitem.php?op=add', 'add');
         $adminObject->displayButton('left');
@@ -133,16 +149,29 @@ switch ($op) {
         $start    = Request::getInt('start', 0);
         $criteria = new Criteria('', '');
         $criteria->setSort('weight');
-        //$criteria->setLimit($helper->getConfig('perpage', Constants::DEFAULT_PER_PAGE));
         //Get list data
         /** @var  $menuItemHandler  \XoopsModules\Simplepage\MenuItemHandler */
         $menuItemHandler = $helper->getHandler('MenuItem');
-        $menuitems = $menuItemHandler->getAll($criteria);
-        //$count = $menuItemHandler->getCount($criteria);
-        //$menuitemr = getPageNav($count, $helper->getConfig('perpage', Constants::DEFAULT_PER_PAGE), $start, 'start');
+        $menuitems       = $menuItemHandler->getAll($criteria);
+        $count           = is_countable($menuitems) ? count($menuitems) : 0;
+        $pager           = Utility::getPageNav($count, $perPage, $start, 'start');
+        $menuitems       = array_slice($menuitems, $start, $perPage, true);
         //Show list
-        //include('../include/admin_header_tpl.php');
-        include('../include/menuitem_list_tpl.php');
+        $itemsArray = [];
+        /** @var \XoopsModules\Simplepage\MenuItem $item */
+        foreach ($menuitems as $item) {
+            $itemArray = $item->getValues();
+            $itemArray['adminLink'] = $item->getAdminLink();
+            $itemsArray[] = $itemArray;
+        }
+        $GLOBALS['xoopsTpl']->assign([
+            'thisUrl'    => $_SERVER['SCRIPT_NAME'],
+            'indexUrl'   => $helper->url('index.php'),
+            'itemsArray' => $itemsArray,
+            'pager'      => $pager
+        ]);
+        $GLOBALS['xoTheme']->addStylesheet($helper->url('assets/css/simplepage_admin.css'));
+        echo $GLOBALS['xoopsTpl']->fetch($helper->path('templates/admin/simplepage_menuitem_list.tpl'));
         break;
 }
 

@@ -1,33 +1,32 @@
 <h5>0.4.0 Alpha 1   [NOT RELEASED]</h5>  Dev: Xoops 2.5.11, PHP 7.3.10
 <hr>
 <b>To Do:</b>
-- Finish conversion of Admin GUI
-- change admin display to use templates
-- move form display logic to classes
 - move hard coded language strings to language files
-- add support for Smartclone module
 - add install/update/uninstall logic
+- change vars to PSRx camelCase
 - remove CSS from templates, put into ./assets/CSS folder
-- move javascript from ./include to ./assets/js folder
-- replace ./include/interface.js with 'modern' alternative
-- add admin help page
+- add Admin help page
 - add image upload support for pages (in progress)
+- add support for Smartclone module
 <br><b>Completed</b>
 - converted to XOOPS 2.5.x Admin GUI (zyspec)
+- changed admin display to use templates (zyspec)
 - namespaces, autoloading (zyspec)
 - added XOOPS Common module classes (zyspec)
-- added Constants class vars to replace hard coded values throughout module
+- added Constants class vars to replace hard coded values throughout module (zyspec)
 - added English translation (zyspec)
 - use Xmf\Request to sanitize input (zyspec)
 - minor bug fixes (zyspec)
 - minor code/HTML cleanup & add some PhpDoc comments (zyspec)
 - use configs ($icons[]) to simplify HTML rendering (zyspec)
-- moved images to ./assets folder
-- removed jquery from ./include folder and use included version with XOOPS
-- change vars to PSRx camelCase
-- added ./docs (changelog.txt, install.txt, license.txt, credits.txt)
-- convert admin routines (page.php & menuitem.php) to remove function calls
-- moved dB inserted items from ./sql/mysql.sql to .yml test data
+- moved form display logic to classes (zyspec)
+- moved images to ./assets/images folder (zyspec)
+- moved javascript from ./include to ./assets/js folder (zyspec)
+- removed jquery from ./include folder and use included version with XOOPS (zyspec)
+- changed ./include/interface.js with 'modern' alternative (zyspec)
+- added ./docs (changelog.txt, install.txt, license.txt, credits.txt) (zyspec)
+- convert admin routines (page.php & menuitem.php) to remove function calls (zyspec)
+- moved dB inserted items from ./sql/mysql.sql to .yml test data (zyspec)
 
 <h5>0.3.1 [NOT RELEASED]</h5>
 <hr>

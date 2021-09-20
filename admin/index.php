@@ -39,6 +39,19 @@ xoops_cp_header();
 
 $adminObject->displayNavigation(basename(__FILE__));
 
+
+$criteria = new \Criteria('');
+$criteria->setGroupBy('isPublished');
+$pageCount       = $helper->getHandler('Page')->getCounts($criteria);
+$totalPages      = array_sum($pageCount);
+$totalPubPages   = isset($pageCount[1]) ? $pageCount[1] : 0;
+$totalDraftPages = $totalPages - $totalPubPages;
+
+$adminObject->addInfoBox(_MD_SIMPLEPAGE_DASHBOARD);
+$adminObject->AddInfoBoxLine(sprintf('<span class="infolabel">' . _MD_SIMPLEPAGE_TOTAL_PUB . '</span>', '<span class="infotext green bold">' . (int)$totalPubPages . '</span>'));
+$adminObject->addInfoBoxLine(sprintf('<span class="infolabel">' . _MD_SIMPLEPAGE_TOTAL_DRAFT . '</span>', '<span class="infotext red bold">' . (int)$totalDraftPages . '</span>'));
+$adminObject->addInfoBoxLine(sprintf('<span class="infolabel">' . _MD_SIMPLEPAGE_TOTAL_PAGES . '</span>', '<span class="infotext bold">' . (int)$totalPages . '</span>'));
+
 //check for latest release
 
 $newRelease = Utility::checkVerModule($helper);

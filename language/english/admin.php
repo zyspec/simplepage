@@ -26,13 +26,13 @@ define('_AD_SIMPLEPAGE_UPDATE_DATABASE_FAIL', '<div class="error">Failed to upda
 //Page.php
 define('_AD_SIMPLEPAGE_PAGENAME_ALREADY_EXISTS', '<div class="error">The page ID already exists and cannot be repeated.</div>');
 
-//page_form.php
+//Page::getFormItems() display
 define('_AD_SIMPLEPAGE_ADDPAGE', 'Add page');
 define('_AD_SIMPLEPAGE_EDITPAGE', 'Edit page');
 define('_AD_SIMPLEPAGE_PUBLISH', 'Release');
 define('_AD_SIMPLEPAGE_DRAFT', 'Draft');
 
-//menuitem_form.php
+//MenuItem::getFormItems() diesplay
 define('_AD_SIMPLEPAGE_ADDMENUITEM', 'Add menu item');
 define('_AD_SIMPLEPAGE_EDITMENUITEM', 'Edit menu item');
 define('_AD_SIMPLEPAGE_SELECTPAGE', 'Select page');
@@ -40,13 +40,14 @@ define('_AD_SIMPLEPAGE_TARGET', 'Target');
 define('_AD_SIMPLEPAGE_OPENINSELF', 'Open in the original window');
 define('_AD_SIMPLEPAGE_OPENINNEW', 'Open in new window');
 
-//menuitem_list_tpl.php
+//admin/simplepage_menuitem_list.tpl
 define('_AD_SIMPLEPAGE_MENUITEM', 'Menu Item');
 define('_AD_SIMPLEPAGE_SORTTHEMENU', 'Menu sort');
 define('_AD_SIMPLEPAGE_DRAP_AND_DROP_THE_MENUITEM', 'Please drag the menu items below to sort');
 define('_AD_SIMPLEPAGE_SUBMITNEWORDER', 'Submit order');
+define('_AD_SIMPLEPAGE_MENU_SORTED', 'Resorted menu items');
 
-//simplepage_page_list.tpl
+//admin/simplepage_page_list.tpl
 define('_AD_SIMPLEPAGE_PAGEIDENTIFIER', 'Page ID');
 define('_AD_SIMPLEPAGE_CREATETIME', 'Creation time');
 define('_AD_SIMPLEPAGE_LASTMODIFY', 'Recently updated');

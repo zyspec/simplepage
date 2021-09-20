@@ -50,7 +50,8 @@ $modversion['tables'] = [
 $modversion['templates'] = [
     ['file' => 'simplepage_index.tpl', 'description' => ''],
     ['file' => 'simplepage_common_breadcrumb.tpl', 'description' => ''],
-    ['file' => 'admin/simplepage_page_list.tpl', 'description' => '']
+    ['file' => 'admin/simplepage_page_list.tpl', 'description' => ''],
+    ['file' => 'admin/simplepage_menuitem_list.tpl', 'description' => '']
 ];
 
 // Main Menu

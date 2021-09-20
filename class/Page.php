@@ -92,14 +92,37 @@ class Page extends \XoopsObject
         $isDisplayTitle = $this->getVar('isDisplayTitle');
         $isDisplayTitle = !empty($isDisplayTitle)? $isDisplayTitle : 1; //default
         $form->addElement(new \XoopsFormRadioYN(_AD_SIMPLEPAGE_ISDISPLAYTITLE, 'isDisplayTitle', $isDisplayTitle, _YES, _NO), true);
-        //selectEditor
-        //$options['editor'] = 'fckeditor'; //ezsky hack (ezskyyoung@gmail.com)
-        //$form->addElement(new XoopsFormDhtmlTextArea(_AD_SIMPLEPAGE_CONTENT, 'content', $this->getVar('content', 'e'),'','','',$options), true);
-        $form->addElement(new \XoopsFormDhtmlTextArea(_AD_SIMPLEPAGE_CONTENT, 'content', $this->getVar('content', 'e'),25,null,'',null), true);
+        //$form->addElement(new \XoopsFormDhtmlTextArea(_AD_SIMPLEPAGE_CONTENT, 'content', $this->getVar('content', 'e'),25,null,'',null), true);
+
+        $myts = \MyTextSanitizer::getInstance();
+        /** @var \XoopsModuleHandler $moduleHandler */
+        $moduleHandler = \xoops_getHandler('module');
+        $configHandler = \xoops_getHandler('config');
+        //        $xp_module      = $moduleHandler->getByDirname("xoopspoll");
+        //        $module_id      = $xp_module->getVar("mid");
+        //        $xp_config      = $configHandler->getConfigsByCat(0, $module_id);
+        $sysModule = $moduleHandler->getByDirname('system');
+        $sysMid     = $sysModule->getVar('mid');
+        $sysConfig = $configHandler->getConfigsByCat(0, $sysMid);
+
+        $editorConfigs = [
+            //                           'editor' => $GLOBALS['xoopsModuleConfig']['useeditor'],
+            //                           'editor' => $xp_config['useeditor'],
+            'editor' => $sysConfig['general_editor'],
+            'rows'   => 25,
+            'cols'   => 80,
+            'width'  => '100%',
+            'height' => '350px',
+            'name'   => 'content',
+            //'value'  => $myts->stripSlashesGPC($this->getVar('description'))
+            'value'  => $myts->htmlSpecialChars($this->getVar('content')),
+        ];
+        $contentTxt     = new \XoopsFormEditor(_AD_SIMPLEPAGE_CONTENT, 'content', $editorConfigs);
+        $form->addElement($contentTxt);
 
         //published or draft
         $isPublished = $this->getVar('isPublished');
-        $isPublished = !empty($isPublished)? $isPublished : 1; //default
+        $isPublished = empty($isPublished)? 0 : 1; //default
         $form->addElement(new \XoopsFormRadioYN(_AD_SIMPLEPAGE_ISPUBLISHED, 'isPublished', $isPublished, _AD_SIMPLEPAGE_PUBLISH, _AD_SIMPLEPAGE_DRAFT), true);
 
         //submit

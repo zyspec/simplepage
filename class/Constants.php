@@ -76,11 +76,11 @@ interface Constants
     /**
      * item is not active
      */
-    const IS_NOT_ACTIVE = 0;
+    const IS_NOT_PUBLISHED = 0;
     /**
      * item is active
      */
-    const IS_ACTIVE = 1;
+    const IS_PUBLISHED = 1;
     /**
      * is not locked
      */

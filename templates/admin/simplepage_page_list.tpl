@@ -1,75 +1,27 @@
-<style>
-.warning{
-	background-color: yellow;
-	padding: 10px;
-}
-.error{
-	background-color:#CC3333;
-	padding: 10px;
-}
-.form-head{
-	background-color: #678FF4;
-	color:#FFFFFF;
-	padding:4px;
-}
-.form-head a{
-	color:#FFFFFF;
-}
-.form-head a:hover{
-	color:#FF9900;
-}
-.button{
-	padding:2px 10px;
-	border:double #666666;
-	background-color:#CCCCCC;
-}
-.form-caption{
-	text-align: right;
-	padding-right: 10px;
-}
-.form-even{
-	background-color: #DBE8FD;
-}
-.form-odd{
-	background-color: #E1E9FB;
-}
-.pager{
-	text-align: right;
-	margin: 15px;
-}
-
-#nav{
-	/*float:left;*/
-}
-#nav li{
-	display:inline;
-	color:#000000;
-	text-decoration:none;
-	text-align:center;
-	background-color:#ececec;
-	margin-left:20px;
-}
-</style>
+<link rel="stylesheet" src="../assets/css/simplepage_admin.css"></link>
 
 <!-- Send delete ID start -->
 <form name="deletesel" action="<{$thisUrl}>" method="post">
 <input name="op" type="hidden" value="delete">
-<input name="pageId" type="hidden" value="">
+<input name="myId" type="hidden" value="">
 </form>
 
+<{*
 <script>
 <!--
 function confirmDelete(id) {
 	if (confirm('Do you confirm to delete?')) {
-		document.deletesel.pageId.value = id;
+		document.deletesel.myId.value = id;
 		document.deletesel.submit();
 		}
 }
 -->
 </script>
+*}>
 <!-- Send delete ID end -->
 
 <table class="outer width90 border center pad3" style="margin: 0">
+  <thead>
   <tr class="form-head">
 	<th><div class="center">#</div></th>
 	<th><div class="center"><{$smarty.const._AD_SIMPLEPAGE_PUBLISH}></div></th>
@@ -81,7 +33,9 @@ function confirmDelete(id) {
     <th><div class="center"><{$smarty.const._AD_SIMPLEPAGE_MODIFYUSER}></div></th>
     <th><div class="center"><{$smarty.const._AD_SIMPLEPAGE_ACTION}></div></th>
   </tr>
+  </thead>
 	<{if !empty($pagesArray)}>
+	<tbody>
 	<{foreach from=$pagesArray item=page}>
 		<tr class="<{cycle values="odd,even"}>">
 		<td><div class="center"><{$page.pageId}></div></td>
@@ -102,6 +56,8 @@ function confirmDelete(id) {
 	<{else}>
 		<tr><td colspan="9" class="even"><div class="center"><{$smarty.const._AD_SIMPLEPAGE_NOPAGE}></div></td></tr>
 	<{/if}>
+	</tbody>
 </table>
 
-<div class="pager"><?php echo $pager; ?></div>
+<div class="pager"><{$pager}></div>
+<script src="../assets/js/simplepage_admin.js"></script>

@@ -1,0 +1,29 @@
+.pager {
+    text-align: right;
+    margin: 15px;
+}
+/*
+Used for menuitem simple Sortable list
+*/
+.blue-background-class {
+    background-color: #E1E9FB;
+}
+.gray-background-class {
+    background-color: lightgray;
+}
+.ghostwhite-background-class {
+    background-color: ghostwhite;
+}
+.gradiant-gray-white-background-class{
+    background-image: linear-gradient(ghostwhite, darkgray)
+}
+#simplelist li {
+    list-style: none;
+    font-size: 1.2em;
+    line-height: 150%;
+    margin: 1px;
+    padding: 3px 5px;
+}
+.list-group-item {
+    border:1px solid #7EA6B2;
+}

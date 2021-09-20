@@ -13,7 +13,8 @@
 use \Xmf\Request;
 use \XoopsModules\Simplepage\{
     Constants,
-    Helper
+    Helper,
+    Utility
 };
 
 /**
@@ -24,7 +25,7 @@ use \XoopsModules\Simplepage\{
  * @var string[] $icons;
  */
 require_once __DIR__ . '/admin_header.php';
-require_once '../include/functions.php';
+//require_once '../include/functions.php';
 xoops_cp_header();
 
 $adminObject->displayNavigation(basename(__FILE__));
@@ -41,13 +42,12 @@ switch ($op) {
         /** @var  $pageHandler  \XoopsModules\Simplepage\PageHandler */
         $pageHandler = $helper->getHandler('Page');
         $page        = $pageHandler->get($pageId);
-        //include('../include/admin_header_tpl.php');
-        require_once(XOOPS_ROOT_PATH.'/class/xoopsformloader.php');
+
+        require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
         $formTitle = $page->isNew()? _AD_SIMPLEPAGE_ADDPAGE : _AD_SIMPLEPAGE_EDITPAGE;
         $form = new \XoopsThemeForm($formTitle, 'pageform', $_SERVER['SCRIPT_NAME'], 'post');
         $page->getFormItems($form);
         $form->display();
-        //include('../include/page_form.php');
 		break;
 	case 'save': //Save to database
         $pageId = Request::getInt('pageId', 0);
@@ -85,10 +85,10 @@ switch ($op) {
 		//confirmDelete();
 		break;
 	case 'delete': //Delete from database
-        if (!Request::hasVar('pageId')) {
+        if (!Request::hasVar('myId')) {
             redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, 'Deleting object no exist.');
         }
-        $pageId = Request::getInt('pageId', null);
+        $pageId = Request::getInt('myId', null);
         /**  @var  $pageHandler \XoopsModules\Simplepage\PageHandler */
         $pageHandler = $helper->getHandler('Page');
         /**  @var  $page \XoopsModules\Simplepage\Page */
@@ -118,29 +118,27 @@ switch ($op) {
         $adminObject->displayButton('left');
 		//loadModuleAdminMenu(1);
         //Get parameters
-        $start = Request::getInt('start', 0);
+        $start    = Request::getInt('start', 0);
         $criteria = new Criteria(null);
         $criteria->setLimit($perPage);
         //Get list data
         /** @var  $pageHandler  \XoopsModules\Simplepage\PageHandler */
         $pageHandler = $helper->getHandler('Page');
-        $pages = $pageHandler->getAll($criteria);
-        $count = $pageHandler->getCount($criteria);
-        $pager = getPageNav($count, $perPage, $start, 'start');
+        $pages       = $pageHandler->getAll($criteria);
+        $count       = $pageHandler->getCount($criteria);
+        $pager       = Utility::getPageNav($count, $perPage, $start, 'start');
         //Show list
-        //include('../include/admin_header_tpl.php');
-
         $pagesArray = [];
         foreach ($pages as $page) {
             $pageArray = $page->getValues();
-            $pageArray['isPubIcon'] = "../assets/images/" . $page->getVar('isPublished') . '.png';
-            $pageArray['isPubIconAlt'] = '';
-            $pageArray['isDispIcon'] = "../assets/images/" . $page->getVar('isDisplayTitle') . '.png';
+            $pageArray['isPubIcon']     = "../assets/images/" . $page->getVar('isPublished') . '.png';
+            $pageArray['isPubIconAlt']  = '';
+            $pageArray['isDispIcon'] =  "../assets/images/" . $page->getVar('isDisplayTitle') . '.png';
             $pageArray['isDispIconAlt'] = '';
-            $pageArray['created'] = $page->created();
-            $pageArray['updated'] = $page->updated();
-            $pageArray['updater'] = $page->updater();
-            $pagesArray[] = $pageArray;
+            $pageArray['created']       = $page->created();
+            $pageArray['updated']       = $page->updated();
+            $pageArray['updater']       = $page->updater();
+            $pagesArray[]               = $pageArray;
         }
 
         $GLOBALS['xoopsTpl']->assign([
@@ -150,8 +148,8 @@ switch ($op) {
             'pager'      => $pager
 
         ]);
+        $GLOBALS['xoTheme']->addStylesheet($helper->url('assets/css/simplepage_admin.css'));
         echo $GLOBALS['xoopsTpl']->fetch($helper->path('templates/admin/simplepage_page_list.tpl'));
-        //include('../include/page_list_tpl.php');
 		break;
 }
 

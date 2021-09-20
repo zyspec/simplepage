@@ -16,7 +16,7 @@ use \XoopsModules\Simplepage\{
 
 include __DIR__ . '/preloads/autoloader.php';
 require_once dirname(__DIR__, 2) . '/mainfile.php';
-require_once XOOPS_ROOT_PATH . '/modules/simplepage/include/functions.php';
+//require_once XOOPS_ROOT_PATH . '/modules/simplepage/include/functions.php';
 
 $xoopsOption['template_main'] = 'simplepage_index.tpl';
 require dirname(__DIR__, 2) . '/header.php';
@@ -30,7 +30,7 @@ $criteria->setSort('weight');
 $menuitemHandler = $helper->getHandler('MenuItem');
 /** @var  $menuitem  \XoopsModules\Simplepage\MenuItem */
 $menuitems = $menuitemHandler->getAll($criteria);
-//echo __FILE__.__LINE__;debugPrint($menuitems);
+//\Xmf\Debug::dump($menuitems);
 $GLOBALS['xoopsTpl']->assign('menuitems', $menuitems);
 
 //Fetch page object
@@ -51,18 +51,20 @@ if ('' == $pageName) {
 }
 $criteria = new CriteriaCompo();
 $criteria->add(new Criteria('pageName', $pageName));
-$criteria->add(new Criteria('isPublished', 1));
+$criteria->add(new Criteria('isPublished', Constants::IS_PUBLISHED));
 $criteria->setLimit(1);
 /*@var $pageHandler SimplepagePageHandler*/
 $pageHandler = $helper->getHandler('Page');
 /*@var $page SimplepagePage*/
 $result = $pageHandler->getObjects($criteria);
-if (!$result || !$result[0]) redirect_header(XOOPS_URL, Constants::REDIRECT_DELAY_MEDIUM, _SIMPLEPAGE_MD_PAGENOTFOUND);
+if (!$result || !$result[0]) {
+    redirect_header(XOOPS_URL, Constants::REDIRECT_DELAY_MEDIUM, _SIMPLEPAGE_MD_PAGENOTFOUND);
+}
 $page =& $result[0];
 $page->initVar('dohtml', XOBJ_DTYPE_INT, 1);
-$page->initVar('dobr', XOBJ_DTYPE_INT, 0);
+$page->initVar('dobr', XOBJ_DTYPE_INT, 1);
 $GLOBALS['xoopsTpl']->assign('page', $page);
-//echo __FILE__.__LINE__;debugPrint($page);
+//\Xmf\Debug::dump($page);
 
 ///Bread crumbs
 //Take the title. The language file can be modified to display different module names in different languages
@@ -81,6 +83,5 @@ foreach ($menuitems as $menuitem) {
 	}
 }
 $GLOBALS['xoopsTpl']->assign('breadcrumb', $breadcrumb->render());
-
-addCss($helper->url('templates/simplepage.css'));
+$GLOBALS['xoTheme']->addStylesheet($helper->url('assets/css/simplepage.css'));
 require_once XOOPS_ROOT_PATH . '/footer.php';
