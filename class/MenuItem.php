@@ -51,9 +51,10 @@ class MenuItem extends \XoopsObject
 	
 	public function getAdminLink()
     {
+        $this->helper->loadLanguage('admin');
 		$link = $this->getVar('link');
 		if ($link != '' && !preg_match("/^http[s]*:\/\//i", $link)) {
-			$ret = 'Page：<a href="' . $this->helper->url('index.php?page=' . $link) . '" target="_blank">' . $this->getVar('link') . '</a>';
+			$ret = _AD_SIMPLEPAGE_MENUITEM_PAGE_PREFIX . '<a href="' . $this->helper->url('index.php?page=' . $link) . '" target="_blank">' . $this->getVar('link') . '</a>';
 		} else {
 			$ret = '<a href="' . $link . '" target="_blank" title="' . $link . '">' . xoops_substr($link, 0, 50) . "</a>";
 		}
@@ -84,7 +85,10 @@ class MenuItem extends \XoopsObject
 
         //Get all published pages
         $criteria = new \Criteria('isPublished', 1);
-        /* @var $pageHandler SimplepagePageHandler */
+        /**
+         * @var  \XoopsModules\Simplepage\PageHandler  $pageHandler
+         * @var  string[]  $pages
+         */
         $pageHandler = \XoopsModules\Simplepage\Helper::getInstance()->getHandler('Page');
         $pages = $pageHandler->getAll($criteria, array('pageName', 'title'), false);
         foreach ($pages as $page) {

@@ -29,10 +29,10 @@ use XoopsModules\Simplepage\{
 };
 
 /**
- * @var \Xmf\Module\Admin $adminObject
- * @var \XoopsModules\Simplepage\Helper $helper
- * @var string $moduleDirName
- * @var string $moduleDirNameUpper
+ * @var \Xmf\Module\Admin  $adminObject
+ * @var \XoopsModules\Simplepage\Helper  $helper
+ * @var string  $moduleDirName
+ * @var string  $moduleDirNameUpper
  */
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
@@ -44,7 +44,7 @@ $criteria = new \Criteria('');
 $criteria->setGroupBy('isPublished');
 $pageCount       = $helper->getHandler('Page')->getCounts($criteria);
 $totalPages      = array_sum($pageCount);
-$totalPubPages   = isset($pageCount[1]) ? $pageCount[1] : 0;
+$totalPubPages   = isset($pageCount[Constants::IS_PUBLISHED]) ? $pageCount[Constants::IS_PUBLISHED] : 0;
 $totalDraftPages = $totalPages - $totalPubPages;
 
 $adminObject->addInfoBox(_MD_SIMPLEPAGE_DASHBOARD);

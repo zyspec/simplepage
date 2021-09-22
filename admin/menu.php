@@ -54,7 +54,6 @@ if ($helper->getConfig('displayDeveloperTools')) {
         'icon'  => $pathIcon32 . '/database_go.png',
     ];
 }
-
 $adminmenu[] = [
     'title' => 'About',
     'link'  => 'admin/about.php',

@@ -21,10 +21,18 @@ define('_AD_SIMPLEPAGE_DELETE', 'delete');
 define('_AD_SIMPLEPAGE_EDIT', 'edit');
 define('_AD_SIMPLEPAGE_NOPAGE', 'No page');
 define('_AD_SIMPLEPAGE_UPDATE_DATABASE_SUCCESS', 'Successfully updated the database');
-define('_AD_SIMPLEPAGE_UPDATE_DATABASE_FAIL', '<div class="error">Failed to update the database</div>');
+define('_AD_SIMPLEPAGE_UPDATE_DATABASE_FAIL', 'Failed to update the database');
 
-//Page.php
-define('_AD_SIMPLEPAGE_PAGENAME_ALREADY_EXISTS', '<div class="error">The page ID already exists and cannot be repeated.</div>');
+//page.php
+define('_AD_SIMPLEPAGE_PAGE_ALREADY_EXISTS', 'The page ID already exists and cannot be repeated.');
+define('_AD_SIMPLEPAGE_PAGE_NOT_EXIST', 'The page ID requested does not');
+define('_AD_SIMPLEPAGE_DELETE_PAGE_SUCCESS', 'Successfully deleted (%s)');
+define('_AD_SIMPLEPAGE_DELETE_PAGE_FAIL', '(%s) could not be deleted');
+
+//menuitem.php
+define('_AD_SIMPLEPAGE_ITEM_NOT_EXIST', 'The menu item ID requested does not');
+define('_AD_SIMPLEPAGE_DELETE_ITEM_SUCCESS', 'Successfully deleted (%s)');
+define('_AD_SIMPLEPAGE_DELETE_ITEM_FAIL', '(%s) could not be deleted');
 
 //Page::getFormItems() display
 define('_AD_SIMPLEPAGE_ADDPAGE', 'Add page');
@@ -39,6 +47,8 @@ define('_AD_SIMPLEPAGE_SELECTPAGE', 'Select page');
 define('_AD_SIMPLEPAGE_TARGET', 'Target');
 define('_AD_SIMPLEPAGE_OPENINSELF', 'Open in the original window');
 define('_AD_SIMPLEPAGE_OPENINNEW', 'Open in new window');
+
+define('_AD_SIMPLEPAGE_MENUITEM_PAGE_PREFIX', 'Page: ');
 
 //admin/simplepage_menuitem_list.tpl
 define('_AD_SIMPLEPAGE_MENUITEM', 'Menu Item');

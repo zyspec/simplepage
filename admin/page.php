@@ -25,7 +25,6 @@ use \XoopsModules\Simplepage\{
  * @var string[] $icons;
  */
 require_once __DIR__ . '/admin_header.php';
-//require_once '../include/functions.php';
 xoops_cp_header();
 
 $adminObject->displayNavigation(basename(__FILE__));
@@ -36,30 +35,32 @@ switch ($op) {
     case 'edit'://Show editing interface
         $adminObject->addItemButton(_AD_SIMPLEPAGE_ADDPAGE, 'page.php?op=add', 'add');
         $adminObject->displayButton('left');
-		//loadModuleAdminMenu(1);
-        $pageId = Request::getInt('pageId',0);
-		//addeditPage();
-        /** @var  $pageHandler  \XoopsModules\Simplepage\PageHandler */
+
+        /**
+         * @var  \XoopsModules\Simplepage\PageHandler $pageHandler
+         * @var  \XoopsModules\Simplepage\Page $page
+         */
         $pageHandler = $helper->getHandler('Page');
+        $pageId      = Request::getInt('pageId',0);
         $page        = $pageHandler->get($pageId);
 
         require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-        $formTitle = $page->isNew()? _AD_SIMPLEPAGE_ADDPAGE : _AD_SIMPLEPAGE_EDITPAGE;
-        $form = new \XoopsThemeForm($formTitle, 'pageform', $_SERVER['SCRIPT_NAME'], 'post');
+        $formTitle = $page->isNew() ? _AD_SIMPLEPAGE_ADDPAGE : _AD_SIMPLEPAGE_EDITPAGE;
+        $form      = new \XoopsThemeForm($formTitle, 'pageform', $_SERVER['SCRIPT_NAME'], 'post');
         $page->getFormItems($form);
         $form->display();
 		break;
 	case 'save': //Save to database
-        $pageId = Request::getInt('pageId', 0);
-        /**  @var  $pageHandler  \XoopsModules\Simplepage\PageHandler */
+        /**
+         * @var  \XoopsModules\Simplepage\PageHandler  $pageHandler
+         * @var  \XoopsModules\Simplepage\Page  $page
+         */
         $pageHandler = $helper->getHandler('Page');
-        /** @var $page \XoopsModules\Simplepage\Page */
-        $page = $pageHandler->get($pageId);
-        $page->setFormVars($_POST, '');
-        //$page->setVar('content', $myts->htmlSpecialChars($myts->stripSlashesGPC($_POST['content'])));
-        $page->setVar('content', $_POST['content']);
+        $pageId      = Request::getInt('pageId', 0);
+        $page        = $pageHandler->get($pageId);
+        $page->setVar('content', Request::getText('content', '', 'POST'));
         $page->setVar('pageName', str_replace(' ', '', $page->getVar('pageName')));
-        /** @todo  Check character */
+
         //Time and order
         $time = time();
         if ($page->isNew()) {
@@ -75,10 +76,7 @@ switch ($op) {
         if ($pageHandler->insert($page)) {
             redirect_header($_SERVER['SCRIPT_NAME'], Constants::REDIRECT_DELAY_MEDIUM, _AD_SIMPLEPAGE_UPDATE_DATABASE_SUCCESS);
         } else {
-            //echo _AD_SIMPLEPAGE_UPDATE_DATABASE_FAIL._AD_SIMPLEPAGE_PAGENAME_ALREADY_EXISTS;
-            //echo '<div class="error">'.$page->getHtmlErrors().'</div>';
-            //addeditPage($page);
-            redirect_header($_SERVER['SCRIPT_NAME'] . '?op=add&menuitemId=' . $pageId, Constants::REDIRECT_DELAY_MEDIUM, _AD_SIMPLEPAGE_UPDATE_DATABASE_FAIL . _AD_SIMPLEPAGE_PAGENAME_ALREADY_EXISTS);
+            redirect_header($_SERVER['SCRIPT_NAME'] . '?op=add&menuitemId=' . $pageId, Constants::REDIRECT_DELAY_MEDIUM, '<div class="error">' . _AD_SIMPLEPAGE_UPDATE_DATABASE_FAIL . _AD_SIMPLEPAGE_PAGENAME_ALREADY_EXISTS . '</div>');
         }
         break;
 	case 'confirmDelete': //Show delete warning
@@ -86,21 +84,23 @@ switch ($op) {
 		break;
 	case 'delete': //Delete from database
         if (!Request::hasVar('myId')) {
-            redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, 'Deleting object no exist.');
+            redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, _AD_SIMPLEPAGE_PAGE_NOT_EXIST);
         }
         $pageId = Request::getInt('myId', null);
-        /**  @var  $pageHandler \XoopsModules\Simplepage\PageHandler */
+        /**
+         * @var  \XoopsModules\Simplepage\PageHandler $pageHandler
+         * @var  \XoopsModules\Simplepage\Page $page
+         */
         $pageHandler = $helper->getHandler('Page');
-        /**  @var  $page \XoopsModules\Simplepage\Page */
-        $page = $pageHandler->get($pageId);
+        $page        = $pageHandler->get($pageId);
         if (!$page) {
-            $message = 'Deleting object no exist.';
+            $message = _AD_SIMPLEPAGE_PAGE_NOT_EXIST;
         } else {
             $title = $page->getVar('alias');
             if ($pageHandler->delete($page)) {
-                $message = 'Delete '.$title.' success.';
+                $message = sprintf(_AD_SIMPLEPAGE_DELETE_PAGE_SUCCESS, $title);
             } else {
-                $message = '<span class="red">' . _DELETE . $title . ' failed.</spanfont>';
+                $message = '<span class="red">' . sprintf(_AD_SIMPLEPAGE_DELETE_PAGE_FAIL, $title) . '</span>';
             }
         }
         redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, $message);
@@ -116,19 +116,22 @@ switch ($op) {
         $perPage = $helper->getConfig('perpage', Constants::DEFAULT_PER_PAGE);
         $adminObject->addItemButton(_AD_SIMPLEPAGE_ADDPAGE, 'page.php?op=add', 'add');
         $adminObject->displayButton('left');
-		//loadModuleAdminMenu(1);
         //Get parameters
         $start    = Request::getInt('start', 0);
         $criteria = new Criteria(null);
         $criteria->setLimit($perPage);
         //Get list data
-        /** @var  $pageHandler  \XoopsModules\Simplepage\PageHandler */
+        /**
+         * @var  \XoopsModules\Simplepage\PageHandler  $pageHandler
+         * @var  \XoopsModules\Simplepage\Page[]  $pages
+         */
         $pageHandler = $helper->getHandler('Page');
         $pages       = $pageHandler->getAll($criteria);
         $count       = $pageHandler->getCount($criteria);
         $pager       = Utility::getPageNav($count, $perPage, $start, 'start');
         //Show list
         $pagesArray = [];
+        /** @var  \XoopsModules\Simplepage\Page  $page */
         foreach ($pages as $page) {
             $pageArray = $page->getValues();
             $pageArray['isPubIcon']     = "../assets/images/" . $page->getVar('isPublished') . '.png';

@@ -11,7 +11,8 @@ use \Xmf\Request;
 use \XoopsModules\Simplepage\{
     Common\Breadcrumb,
     Constants,
-    Helper
+    Helper,
+    Page
 };
 
 include __DIR__ . '/preloads/autoloader.php';
@@ -53,14 +54,17 @@ $criteria = new CriteriaCompo();
 $criteria->add(new Criteria('pageName', $pageName));
 $criteria->add(new Criteria('isPublished', Constants::IS_PUBLISHED));
 $criteria->setLimit(1);
-/*@var $pageHandler SimplepagePageHandler*/
+/**
+ * @var  \XoopsModules\Simplepage\PageHandler  $pageHandler
+ * @var  \XoopsModules\Simplepage\Page[]  $result
+ * @var  \XoopsModules\Simplepage\Page  $page
+ */
 $pageHandler = $helper->getHandler('Page');
-/*@var $page SimplepagePage*/
-$result = $pageHandler->getObjects($criteria);
-if (!$result || !$result[0]) {
+$result      = $pageHandler->getObjects($criteria);
+if (!$result || !(array_key_exists(0, $result)) || !$result[0] instanceof Page) {
     redirect_header(XOOPS_URL, Constants::REDIRECT_DELAY_MEDIUM, _SIMPLEPAGE_MD_PAGENOTFOUND);
 }
-$page =& $result[0];
+$page = $result[0];
 $page->initVar('dohtml', XOBJ_DTYPE_INT, 1);
 $page->initVar('dobr', XOBJ_DTYPE_INT, 1);
 $GLOBALS['xoopsTpl']->assign('page', $page);
@@ -76,12 +80,13 @@ if (defined('_MI_SIMPLEPAGE_MODULENAME')) {
 }
 $breadcrumb = new Breadcrumb();
 $breadcrumb->addLink($moduleName, 'index.php');
-foreach ($menuitems as $menuitem) {	
+foreach ($menuitems as $menuitem) {
 	if ($menuitem->getVar('link') == $page->getVar('pageName')) {
 		$breadcrumb->addLink($menuitem->title());
 		break;
 	}
 }
+
 $GLOBALS['xoopsTpl']->assign('breadcrumb', $breadcrumb->render());
 $GLOBALS['xoTheme']->addStylesheet($helper->url('assets/css/simplepage.css'));
 require_once XOOPS_ROOT_PATH . '/footer.php';

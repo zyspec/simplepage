@@ -18,11 +18,11 @@ use \XoopsModules\Simplepage\{
 };
 
 /**
- * @var Xmf\Module\Admin $adminObject
- * @var XoopsModules\Simplepage\Helper $helper
- * @var string $moduleDirName
- * @var string $moduleDirNameUpper
- * @var string[] $icons;
+ * @var  Xmf\Module\Admin  $adminObject
+ * @var  XoopsModules\Simplepage\Helper  $helper
+ * @var  string  $moduleDirName
+ * @var  string  $moduleDirNameUpper
+ * @var  string[]  $icons;
  */
 require_once __DIR__ . '/admin_header.php';
 //require_once dirname(__DIR__) . '/include/functions.php';
@@ -39,7 +39,10 @@ switch ($op) {
         $adminObject->displayButton('left');
         $menuitemId = Request::getInt('myId', 0);
         //Get data
-        /** @var  $menuItemHandler  \XoopsModules\Simplepage\MenuItemHandler */
+        /**
+         * @var  \XoopsModules\Simplepage\MenuItemHandler  $menuItemHandler
+         * @var  \XoopsModules\Simplepage\MenuItem  $menuitem
+         */
         $menuItemHandler = $helper->getHandler('MenuItem');
         $menuitem        = $menuItemHandler->get($menuitemId);
         // add the javascript
@@ -50,25 +53,18 @@ switch ($op) {
         ');
         require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
         $formTitle = $menuitem->isNew()? _AD_SIMPLEPAGE_ADDMENUITEM : _AD_SIMPLEPAGE_EDITMENUITEM;
-        $form = new \XoopsThemeForm($formTitle, 'menuitemForm', $_SERVER['SCRIPT_NAME'], 'post');
+        $form      = new \XoopsThemeForm($formTitle, 'menuitemForm', $_SERVER['SCRIPT_NAME'], 'post');
         $menuitem->getFormItems($form);
         $form->display();
-        //echo "<!--\n"
-        //    . "<script>\n"
-        //   . "function changeLink() {\n"
-	    //   . "    document.getElementById(\"link\").value = document.getElementById(\"page\").value;\n"
-        //   . "}\n"
-        //   . "</script>\n"
-        //   . "-->\n";
     break;
 	case 'save': //Save to database
         $menuitemId = Request::getInt('menuitemId', 0);
-        /** @var $menuItemHandler \XoopsModules\Simplepage\MenuItemHandler */
+        /**
+         * @var  \XoopsModules\Simplepage\MenuItemHandler  $menuItemHandler
+         * @var  \XoopsModules\Simplepage\MenuItem $menuitem
+         */
         $menuItemHandler = $helper->getHandler('MenuItem');
-        /** @var $menuitem \XoopsModules\Simplepage\MenuItem */
-        $menuitem = $menuItemHandler->get($menuitemId);
-        $menuitem->setFormVars($_POST, '');
-        //$menuitem->setVar('target', )
+        $menuitem        = $menuItemHandler->get($menuitemId);
         //Sorting
         if ($menuitem->isNew()) {
             $menuitem->setVar('weight', time());
@@ -77,7 +73,6 @@ switch ($op) {
         if ($menuItemHandler->insert($menuitem)) {
             redirect_header($_SERVER['SCRIPT_NAME'], Constants::REDIRECT_DELAY_MEDIUM, _AD_SIMPLEPAGE_UPDATE_DATABASE_SUCCESS);
         } else {
-            //echo '<div class="error">'.$menuitem->getHtmlErrors().'</div>';
             redirect_header($_SERVER['SCRIPT_NAME'] . '?op=add&menuitemId=' . $menuitemId, Constants::REDIRECT_DELAY_MEDIUM, $menuitem->getHtmlErrors());
         }
         break;
@@ -85,47 +80,52 @@ switch ($op) {
 		//confirmDelete();
 		break;
 	case 'delete': //Delete from database
-		//deleteMenuitem();
         if (!Request::hasVar('myId')) {
             redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, 'Deleting object no exist.');
         }
         /** @var Helper $helper */
         $helper = Helper::getInstance();
         $menuitemId = Request::getInt('myId', null);
-        /** @var $menuItemHandler \XoopsModules\Simplepage\MenuItemHandler */
+        /**
+         * @var  \XoopsModules\Simplepage\MenuItemHandler $menuItemHandler
+         * @var  \XoopsModules\Simplepage\MenuItem  $menuitem
+         */
         $menuItemHandler = $helper->getHandler('MenuItem');
-        /** @var $menuitem \XoopsModules\Simplepage\MenuItem */
         $menuitem = $menuItemHandler->get($menuitemId);
-        if (!$menuitem) {
-            $message = 'Menu item does not exist.';
-        } else {
+        $message = _AD_SIMPLEPAGE_PAGE_NOT_EXIST;
+        if (!menuitem) {
             $title = $menuitem->getVar('alias');
             if ($menuItemHandler->delete($menuitem)) {
-                $message = 'Delete '.$title.' success.';
+                $message = sprintf(_AD_SIMPLEPAGE_DELETE_PAGE_SUCCESS, $title);
             } else {
-                $message = '<span class="red">' . _DELETE . $title . ' fail.</span>';
+                $message = '<span class="red">' . sprintf(_AD_SIMPLEPAGE_DELETE_PAGE_FAIL, $title) . '</span>';
             }
         }
         redirect_header($_SERVER['SCRIPT_NAME'].'?op=list', Constants::REDIRECT_DELAY_MEDIUM, $message);
         break;
 	case 'sort': //Perform sorting
         $menuOrder = Request::getString('menuOrder', '');
-        $order = explode(',', $menuOrder);
+        $order     = explode(',', $menuOrder);
 
         //Get parameters
         $criteria = new \Criteria('', '');
         $criteria->setSort('weight');
 
         //Get list data
-        /** @var $menuItemHandler XoopsModules\Simplepage\MenuItemHandler */
+        /**
+         * @var  \XoopsModules\Simplepage\MenuItemHandler  $menuItemHandler
+         * @var  \XoopsModules\Simplepage\MenuItem[]  $menuitems
+         */
         $menuItemHandler = $helper->getHandler('MenuItem');
         $menuitems       = $menuItemHandler->getObjects($criteria, true);
 
         $message = _AD_SIMPLEPAGE_MENU_SORTED;
         if ($menuitems) {
             $weight = $first = reset($menuitems)->getVar('weight');
-            if (0 == $weight) echo __FILE__.__LINE__."0000000000000000";
-            $last = end($menuitems)->getVar('weight');
+            if (0 == $weight) { // error message
+                echo __FILE__.__LINE__."0000000000000000";
+            }
+            $last     = end($menuitems)->getVar('weight');
             $interval = intval(($last - $first) / (count($menuitems) - 1));
             foreach ($order as $id) {
                 $menuitems[$id]->setVar('weight', intval($weight));
@@ -150,7 +150,10 @@ switch ($op) {
         $criteria = new Criteria('', '');
         $criteria->setSort('weight');
         //Get list data
-        /** @var  $menuItemHandler  \XoopsModules\Simplepage\MenuItemHandler */
+        /**
+         * @var  \XoopsModules\Simplepage\MenuItemHandler  $menuItemHandler
+         * @var  \XoopsModules\Simplepage\MenuItem[] $menuitems
+         */
         $menuItemHandler = $helper->getHandler('MenuItem');
         $menuitems       = $menuItemHandler->getAll($criteria);
         $count           = is_countable($menuitems) ? count($menuitems) : 0;
@@ -158,7 +161,7 @@ switch ($op) {
         $menuitems       = array_slice($menuitems, $start, $perPage, true);
         //Show list
         $itemsArray = [];
-        /** @var \XoopsModules\Simplepage\MenuItem $item */
+        /** @var  \XoopsModules\Simplepage\MenuItem  $item */
         foreach ($menuitems as $item) {
             $itemArray = $item->getValues();
             $itemArray['adminLink'] = $item->getAdminLink();

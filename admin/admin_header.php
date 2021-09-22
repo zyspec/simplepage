@@ -27,14 +27,13 @@ require_once dirname(__DIR__) . '/include/common.php';
 $moduleDirName      = basename(dirname(__DIR__));
 $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
-/** @var Xmf\Module\Admin $adminObject */
+/** @var  Xmf\Module\Admin  $adminObject */
 $adminObject   = Admin::getInstance();
-$pathIcon16    = Admin::iconUrl('', 16);
-$pathIcon32    = Admin::iconUrl('', 32);
+
 /**
- * @var  \XoopsModules\Simplepage\Helper $helper defined in ../include/common.php
- * @var string $pathModIcon32
- * @var string $pathModIcon16
+ * @var  \XoopsModules\Simplepage\Helper  $helper  defined in ../include/common.php
+ * @var  string  $pathModIcon32
+ * @var  string  $pathModIcon16
  */
 $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 $pathModIcon16 = $helper->getModule()->getInfo('modicons16');
@@ -43,4 +42,3 @@ $pathModIcon16 = $helper->getModule()->getInfo('modicons16');
 $helper->loadLanguage('admin');
 $helper->loadLanguage('main');
 $helper->loadLanguage('modinfo');
-$helper->loadLanguage('common');

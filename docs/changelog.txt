@@ -1,7 +1,8 @@
 <h5>0.4.0 Alpha 1   [NOT RELEASED]</h5>  Dev: Xoops 2.5.11, PHP 7.3.10
 <hr>
 <b>To Do:</b>
-- move hard coded language strings to language files
+- change frontside templates (index & breadcrumb) to use bootstrap
+- add different menu options (horizontal/vertical/tabs/pills/dropdown/etc.) to Preferences
 - add install/update/uninstall logic
 - change vars to PSRx camelCase
 - remove CSS from templates, put into ./assets/CSS folder
@@ -14,6 +15,7 @@
 - namespaces, autoloading (zyspec)
 - added XOOPS Common module classes (zyspec)
 - added Constants class vars to replace hard coded values throughout module (zyspec)
+- move hard coded language strings to language files (zyspec)
 - added English translation (zyspec)
 - use Xmf\Request to sanitize input (zyspec)
 - minor bug fixes (zyspec)

@@ -22,9 +22,13 @@ use Xmf\Module\Admin;
 
 require_once dirname(__DIR__) . '/include/common.php';
 
-$moduleDirName      = basename(dirname(__DIR__));
-$moduleDirNameUpper = mb_strtoupper($moduleDirName);
-$pathIcon32         = Admin::iconUrl('', 32);
+/**
+ * Vars defined via the include/common.php above
+ *
+ * @var  string  $moduleDirName
+ * @var  string  $moduleDirNameUpper
+ * @var  string  $pathIcon32
+ */
 
 echo "<div class='adminfooter'>\n"
     . "  <div class='center'>\n"
@@ -39,12 +43,9 @@ echo "<div class='adminfooter'>\n"
     . constant('CO_' . $moduleDirNameUpper . '_MAINTENANCETEXT') . "\n"
     . sprintf(" <a class='tooltip' rel='external' href='%s' title='%s'>%s</a>",
         constant('CO_' . $moduleDirNameUpper . '_MAINTENANCELINK'),
-        constant('CO_' . $moduleDirNameUpper . '_MAINTENANCETITLE'),
-        constant('CO_' . $moduleDirNameUpper . '_MAINTENANCELINKTEXT')
-    )
+        constant('CO_' . $moduleDirNameUpper . '_MAINTENANCETITLE')) . "\n"
+    . constant('CO_' . $moduleDirNameUpper . '_MAINTENANCELINKTEXT')
     . "  </div>\n"
     . "</div>\n";
-
-//echo "<div class='adminfooter'>\n" . "  <div class='center'>\n" . "    <a href='https://xoops.org' rel='external'><img src='{$pathIcon32}/xoopsmicrobutton.gif' alt='XOOPS' title='XOOPS'></a>\n" . "  </div>\n" . '  ' . _AM_MODULEADMIN_ADMIN_FOOTER . "\n" . '</div>';
 
 xoops_cp_footer();

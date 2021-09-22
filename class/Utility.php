@@ -81,7 +81,7 @@ class Utility
         $maxImgSize       = $helper->getConfig('maxfilesize');
         $maxImgWidth      = $helper->getConfig('maximgwidth');
         $maxImgHeight     = $helper->getConfig('maximgheight');
-        $allowedMimetypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png'];
+        $allowedMimetypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png','image/webp'];
         /** Changed this to use settings from module helper */
         $imgDir           = $helper->uploadPath('images');
         //$imgDir           = $helper->getConfig('uploaddir') . '/images';
@@ -103,7 +103,8 @@ class Utility
     }
 
     /**
-     * @param $filename
+     * @param  string  $filename
+     * @param  bool  true - successfully created thumb, else false
      */
     public static function createThumbs(string $filename)
     {
@@ -131,43 +132,46 @@ class Utility
         $image->enlarge_smaller_images = true;
         $image->preserve_time          = true;
 
+        $retVal = false;
         // resize the image by using the "crop from center" method
         //  and if there is an error, display the error
         if (!$image->resize($tWidth, 0)) {
             // if there was an error, let's see what the error is about
             switch ($image->error) {
                 case 1:
-                    echo 'Source file could not be found!';
+                    echo _MD_SIMPLEPAGE_ERR_SRC_NOT_FOUND;
                     break;
                 case 2:
-                    echo 'Source file is not readable!';
+                    echo _MD_SIMPLEPAGE_ERR_SRC_NO_READ;
                     break;
                 case 3:
-                    echo 'Could not write target file!';
+                    echo _MD_SIMPLEPAGE_ERR_NO_WRITE;
                     break;
                 case 4:
-                    echo 'Unsupported source file format!';
+                    echo _MD_SIMPLEPAGE_ERR_BAD_FILE_FORMAT;
                     break;
                 case 5:
-                    echo 'Unsupported target file format!';
+                    echo _MD_SIMPLEPAGE_ERR_BAD_TARGET_FORMAT;
                     break;
                 case 6:
-                    echo 'GD library version does not support target file format!';
+                    echo _MD_SIMPLEPAGE_ERR_BAD_GDLIB_VER;
                     break;
                 case 7:
-                    echo 'GD library is not installed!';
+                    echo _MD_SIMPLEPAGE_ERR_NO_GDLIB;
                     break;
                 case 8:
-                    echo '"chmod" command is disabled via configuration!';
+                    echo _MD_SIMPLEPAGE_ERR_NO_CHMOD;
                     break;
             }
 
             // if no errors
         } else {
-            echo 'Success!';
+            echo _MD_SIMPLEPAGE_THUMB_SUCCESS;
+            $retVal = true;
         }
 
         unset($image);
+        return $retVal;
     }
 
     /**
@@ -192,7 +196,7 @@ class Utility
      * @return string  html navigation from {@see \XoopsPageNav}
      */
     static function getPageNav($total_items, $items_perpage, $current_start, $start_name="start", $extra_arg="") {
-        require_once(XOOPS_ROOT_PATH.'/class/pagenav.php');
+        require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
         $nav_handler = new \XoopsPageNav($total_items, $items_perpage, $current_start, $start_name, $extra_arg);
         return $nav_handler->renderNav();
     }
@@ -205,7 +209,7 @@ class Utility
      * @param  null|string  $formElementName  The name of the form element used for upload
      * @param  null|string  $targetFileName  The saved file name, the default is only一ID,'original' Is the original file name
      * @param  null|array  $allowedMimeTypes  MIME types of files allowed to be uploaded
-     * @return  string|array  Saved file name; Error message array for upload failure; false No files uploaded.
+     * @return  false|string[]  Saved file name; Error message array for upload failure; false No files uploaded.
      */
     function uploadFile($maxSize = Constants::DEFAULT_FILE_SIZE, $uploadPath, $formElementName='file', $targetFileName = '',  $allowedMimeTypes = []) {
         if(!empty($_FILES[$formElementName]['name'])) { //File upload
@@ -218,8 +222,8 @@ class Utility
             }
 //	    $allowedMimeTypes = array('application/x-truetype-font'); //ttf,ttc,otf
             //Instantiate XoopsMediaUploader
-            require_once(XOOPS_ROOT_PATH.'/class/uploader.php');
-            /* @var $uploader XoopsMediaUploader */
+            require_once XOOPS_ROOT_PATH . '/class/uploader.php';
+            /* @var  \XoopsMediaUploader  $uploader */
             $uploader = new XoopsMediaUploader($uploadPath, $allowedMimeTypes, $maxSize, NULL, NULL);
             $uploader->setTargetFileName($targetFileName);
             //Get files
@@ -234,7 +238,7 @@ class Utility
                 $errors = $uploader->getErrors();
                 return is_array($errors)? $errors : array($errors);
             }
-        } else {	//No files uploaded
+        } else { //No files uploaded
             return false;
         }
     }
@@ -249,41 +253,39 @@ class Utility
      * @param  null|string  $formElementName  The name of the form element used for upload
      * @param  null|string  $targetFileName  The saved file name, the default is only一ID,'original' Is the original file name
      * @param  null|array  $allowedMimeTypes  Allow file upload MIME type
-     * @return  bool|string|array  Saved file name; array Error message array for upload failure; false No files uploaded.
+     * @return  bool|string|string[]  Saved file name; array Error message array for upload failure; false No files uploaded.
      */
     function uploadImage(
-        $maxSize = Constants::DEFAULT_FILE_SIZE,
-        $maxWidth = Constants::DEFAULT_IMAGE_WIDTH,
-        $maxHeight = Constants::DEFAULT_IMAGE_HEIGHT,
-        $uploadPath = '',
-        $formElementName = 'image',
-        $targetFileName = '',
+        $maxSize          = Constants::DEFAULT_FILE_SIZE,
+        $maxWidth         = Constants::DEFAULT_IMAGE_WIDTH,
+        $maxHeight        = Constants::DEFAULT_IMAGE_HEIGHT,
+        $uploadPath       = '',
+        $formElementName  = 'image',
+        $targetFileName   = '',
         $allowedMimeTypes = [])
     {
         //Note that this function has been modified and may not be universal
 
         if(!empty($_FILES[$formElementName]['name'])) { //File upload
             //Set default value
-            global $xoopsModule;
             if (empty($uploadPath)) {
-                $uploadPath = XOOPS_ROOT_PATH.'/modules/'.$xoopsModule->dirname().'/images/';
+                $uploadPath = XOOPS_ROOT_PATH . '/modules/' . $GLOBALS['xoopsModule']->dirname() . '/images/';
             }
             if (empty($targetFileName)) {
                 //Get extension
                 $temp = explode('.', $_FILES['image']['name']);
                 $ext_name = $temp[count($temp) - 1];
                 //Do not add file name at the end		$targetFileName = uniqid(time()).'-'.$_FILES[$formElementName]['name'];
-                global $xoopsUser;
-                $targetFileName = uniqid().'.'.$ext_name;
+                $targetFileName = uniqid() . '.' . $ext_name;
             } elseif ($targetFileName == 'original') {
                 $targetFileName = $_FILES[$formElementName]['name'];
             }
             if (empty($allowedMimeTypes)) {
-                $allowedMimeTypes = array('image/gif', 'image/jpeg', 'image/png', 'application/x-truetype-font'); //ttf,ttc,otf
+                $allowedMimeTypes = array('image/gif', 'image/jpeg', 'image/png', 'image/webp'); //ttf,ttc,otf
             }
             //Instantiate XoopsMediaUploader
-            require_once(XOOPS_ROOT_PATH.'/class/uploader.php');
-            /** @var $uploader XoopsMediaUploader */
+            require_once XOOPS_ROOT_PATH . '/class/uploader.php';
+            /** @var  \XoopsMediaUploader  $uploader */
             $uploader = new \XoopsMediaUploader($uploadPath, $allowedMimeTypes, $maxSize, $maxWidth, $maxHeight);
             $uploader->setTargetFileName($targetFileName);
             //Get files
@@ -303,10 +305,18 @@ class Utility
         }
     }
 
+    /**
+     * @param  string  $text
+     * @return  array|string|string[]
+     */
     function EOCencode($text) {
         return str_replace('EOC', '~*E~*O~*C~*', $text);
     }
 
+    /**
+     * @param  string  $text
+     * @return  array|string|string[]
+     */
     function EOCdecode($text) {
         return str_replace('~*E~*O~*C~*', 'EOC', $text);
     }
