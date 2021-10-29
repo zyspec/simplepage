@@ -15,7 +15,7 @@ class MenuItem extends \XoopsObject
 {
     private $helper;
 	/**
-	 * construtor
+	 * Constructor
 	 */
 	function __construct()
     {
@@ -28,7 +28,12 @@ class MenuItem extends \XoopsObject
 
         $this->helper = Helper::getInstance();
 	}
-	
+
+    /**
+     * Get menu item link
+     *
+     * @return  string
+     */
 	public function link()
     {
 		$link = $this->getVar('link');
@@ -37,18 +42,32 @@ class MenuItem extends \XoopsObject
 		}
 		return $link;
 	}
-	
+
+    /**
+     * Get link target
+     *
+     * @return  string
+     */
 	public function target()
     {
 		return $this->getVar('target');
 	}
-	
-	
+
+    /**
+     * Get the link title
+     *
+     * @return  string
+     */
 	public function title()
     {
 		return $this->getVar('title');
-	} 
-	
+	}
+
+    /**
+     * Get a link for display in Admin
+     *
+     * @return  string
+     */
 	public function getAdminLink()
     {
         $this->helper->loadLanguage('admin');
@@ -61,13 +80,20 @@ class MenuItem extends \XoopsObject
 		return $ret;
 	}
 
+    /**
+     * Render link - stubbed out
+     *
+     * @return  void
+     */
 	public function render()
     {
 
 	}
 
     /**
-     * @param  \XoopsThemeForm $form  a {@see \XoopsThemeForm} object passed-by-reference
+     * Get menu items for display in a form
+     *
+     * @param  \XoopsThemeForm  $form  a {@see \XoopsThemeForm} object passed-by-reference
      * @return  void
      */
     public function getFormItems(&$form)

@@ -14,7 +14,7 @@
  * @package  XoopsModules\Simplepage
  * @subpackage  configuration
  *
- * @copyright  {@link https://xoops.org XOOPS Project}
+ * @copyright  &copy; 2000-2021 {@link https://xoops.org XOOPS Project}
  * @license  {@link https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU GPL 2 or later}
  * @author  XOOPS Module Dev Team (https://xoops.org)
  * @link  https://github.com/XoopsModules25x/simplpage  Simplepage Repository
@@ -69,6 +69,7 @@ if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof \XoopsTpl)
 }
 
 $GLOBALS['xoopsTpl']->assign('mod_url', $helper->url());
+
 // Local icons path
 if (is_object($helper->getModule())) {
     $pathModIcon16 = $helper->getModule()->getInfo('modicons16');
@@ -77,11 +78,3 @@ if (is_object($helper->getModule())) {
     $GLOBALS['xoopsTpl']->assign('pathModIcon16', $pathModIcon16);
     $GLOBALS['xoopsTpl']->assign('pathModIcon32', $pathModIcon32);
 }
-//====================================
-
-// Load XOOPS handlers
-/** @todo  See if laoding these here is really needed */
-//$moduleHandler = xoops_getHandler('module');
-//$memberHandler = xoops_getHandler('member');
-//$notificationHandler = xoops_getHandler('notification');
-//$grouppermHandler = xoops_getHandler('groupperm');

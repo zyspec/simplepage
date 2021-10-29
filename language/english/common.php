@@ -9,13 +9,14 @@
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 /**
- * Pedigree module for XOOPS
+ * Simplepage module for XOOPS
  *
- * @package  XoopsModules\Pedigree
- * @copyright  {@link https://xoops.org/ XOOPS Project}
- * @license  {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package  \XoopsModules\Simplepage
+ * @sybpackage  language
+ * @copyright  &copy; 2000-2021 {@link https://xoops.org XOOPS Project}
+ * @license  {@link https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU GPL 2}
  * @author  XOOPS Module Dev Team (https://xoops.org)
- * @link  https://github.com/XoopsModules25x/pedigree  Pedigree Repository
+ * @link  https://github.com/XoopsModules25x/simplepage  Simplepage Repository
  */
 $moduleDirName = basename(dirname(dirname(__DIR__)));
 $moduleDirNameUpper = mb_strtoupper($moduleDirName);

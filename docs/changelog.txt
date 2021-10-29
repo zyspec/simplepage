@@ -1,15 +1,17 @@
-<h5>0.4.0 Alpha 1   [NOT RELEASED]</h5>  Dev: Xoops 2.5.11, PHP 7.3.10
+<h5>0.4.0-alpha.1   [NOT RELEASED]</h5>  Dev: Xoops 2.5.11, PHP 7.3.10
 <hr>
 <b>To Do:</b>
-- change frontside templates (index & breadcrumb) to use bootstrap
+- create bootstrap frontside templates (index & breadcrumb)
 - add different menu options (horizontal/vertical/tabs/pills/dropdown/etc.) to Preferences
-- add install/update/uninstall logic
+- add install/update/uninstall logic (in progress)
 - change vars to PSRx camelCase
-- remove CSS from templates, put into ./assets/CSS folder
+- remove CSS from templates, put into ./assets/css folder
 - add Admin help page
 - add image upload support for pages (in progress)
 - add support for Smartclone module
+- move all Chinese language files to Transifex
 <br><b>Completed</b>
+- refactored index.php & template to remove class access in template (zyspec)
 - converted to XOOPS 2.5.x Admin GUI (zyspec)
 - changed admin display to use templates (zyspec)
 - namespaces, autoloading (zyspec)

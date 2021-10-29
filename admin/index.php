@@ -11,9 +11,9 @@
  */
 
 /**
- * Module: Pedigree
+ * Module: Simplepage
  *
- * @package  \XoopsModules\Pedigree
+ * @package  \XoopsModules\Simplepage
  * @subpackage  admin
  * @copyright  &copy; 2000-2021 {@link https://xoops.org XOOPS Project}
  * @license  {@link https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU GPL 2 or later}
@@ -29,16 +29,15 @@ use XoopsModules\Simplepage\{
 };
 
 /**
- * @var \Xmf\Module\Admin  $adminObject
- * @var \XoopsModules\Simplepage\Helper  $helper
- * @var string  $moduleDirName
- * @var string  $moduleDirNameUpper
+ * @var  \Xmf\Module\Admin  $adminObject
+ * @var  \XoopsModules\Simplepage\Helper  $helper
+ * @var  string  $moduleDirName
+ * @var  string  $moduleDirNameUpper
  */
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
 
 $adminObject->displayNavigation(basename(__FILE__));
-
 
 $criteria = new \Criteria('');
 $criteria->setGroupBy('isPublished');

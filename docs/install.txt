@@ -6,4 +6,4 @@ extract the module folder into the ./modules directory. Install the module
 through Admin -> System Module -> Modules.
 
 Detailed instructions on installing modules are available in the XOOPS
-Operations Manual: https://shorturl.at/hmAMN
+Operations Manual: https://xoops.gitbook.io/xoops-operations-guide/the-admin-interface/modules

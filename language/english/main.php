@@ -2,10 +2,10 @@
 /**
  * Front-end language file
  *
+ * @package		\XoopsModules\Simplepage
  * @copyright	xoops.com.cn
  * @author		bitshine <bitshine@gmail.com>
  * @since		1.00
- * @package		clone
  */
 
 define("_SIMPLEPAGE_MD_MODULENAME", 'Minimalist page');

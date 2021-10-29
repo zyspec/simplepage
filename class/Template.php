@@ -13,7 +13,7 @@ namespace XoopsModules\Simplepage;
 class Template extends \XoopsObject
 {
 	/**
-	 * construtor
+	 * Constructor
 	 */
 	function __construct()
     {
@@ -24,6 +24,13 @@ class Template extends \XoopsObject
 		$this->initVar('author_id', XOBJ_DTYPE_INT, NULL, true);
 	}
 
+    /**
+     * Render the template
+     *
+     * Stubbed out - NOP
+     *
+     * @return  void
+     */
 	function render()
     {
 

@@ -13,10 +13,9 @@ namespace XoopsModules\Simplepage;
 class TemplateHandler extends \XoopsPersistableObjectHandler
 {
     /**
-     * constructor
+     * Constructor
      *
-     * @param \XoopsDatabase $db
-     * @return TemplateHandler
+     * @param  \XoopsDatabase  $db
      */
     function __construct(&$db) {
         parent::__construct($db, 'simplepage_template', Template::class, 'template_id', 'title');
@@ -30,6 +29,7 @@ class TemplateHandler extends \XoopsPersistableObjectHandler
      * @param  null|bool  $asObject
      * @param  null|bool  $loadLinkedClass
      * @param  null|array  $loadClasses
+     * @return  mixed[]
      */
     public function &getAll($criteria = null, $fields = null, $asObject = true, $loadLinkedClass = false, $loadClasses = array())
     {

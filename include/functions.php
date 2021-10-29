@@ -2,10 +2,9 @@
 /**
  * Commonly used functions
  *
- * @copyright	xoops.com.cn
- * @author		bitshine <bitshine@gmail.com>
- * @since		1.00
- * @package		monkeyking :: investment
+ * @copyright  xoops.com.cn
+ * @package  monkeyking :: investment
+ * @author  bitshine <bitshine@gmail.com>
  */
 
 use \XoopsModules\Simplepage\Constants;

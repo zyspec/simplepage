@@ -16,7 +16,6 @@ class PageHandler extends \XoopsPersistableObjectHandler
      * constructor
      *
      * @param  \XoopsDatabase $db
-     * @return  PageHandler
      */
     function __construct(&$db)
     {
@@ -31,6 +30,7 @@ class PageHandler extends \XoopsPersistableObjectHandler
      * @param  null|bool  $asObject
      * @param  null|bool  $loadLinkedClass
      * @param  null|array  $loadClasses
+     * @return  mixed[]
      */
     public function &getAll($criteria = null, $fields = null, $asObject = true, $loadLinkedClass = false, $loadClasses = array())
     {
@@ -92,10 +92,11 @@ class PageHandler extends \XoopsPersistableObjectHandler
 
     /**
      * Assemble the data of the link object to the corresponding properties.
+     *
      * The corresponding attributes need to be defined in the constructor of the class.
      * Returns an array of references ($row pass-by-reference).
      *
-     * @param  array  $rows
+     * @param  array  $rows  pass-by-reference
      * @param  bool  $asObject
      * @param  string  $linkedClassName
      * @return  void

@@ -106,8 +106,8 @@ class Page extends \XoopsObject
         $sysConfig = $configHandler->getConfigsByCat(0, $sysMid);
 
         $editorConfigs = [
-            //                           'editor' => $GLOBALS['xoopsModuleConfig']['useeditor'],
-            //                           'editor' => $xp_config['useeditor'],
+            //'editor' => $GLOBALS['xoopsModuleConfig']['useeditor'],
+            //'editor' => $xp_config['useeditor'],
             'editor' => $sysConfig['general_editor'],
             'rows'   => 25,
             'cols'   => 80,

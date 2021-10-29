@@ -11,8 +11,8 @@
 
 /**
  * @package  \XoopsModules\Simplepage
- * @copyright  {@link https://xoops.org/ XOOPS Project}
- * @license  {@link https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @copyright  &copy; 2000-2021 {@link https://xoops.org XOOPS Project}
+ * @license  {@link https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU GPL 2}
  * @author  XOOPS Module Dev Team {@link https://xoops.org}
  * @link  https://github.com/XoopsModules25x/simplepage  Simplepage Repository
  */
@@ -20,7 +20,7 @@
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
 
-/** @var \Xmf\Module\Admin $adminObject */
+/** @var \Xmf\Module\Admin  $adminObject */
 $adminObject->displayNavigation(basename(__FILE__));
 $adminObject::setPaypal('xoopsfoundation@gmail.com');
 $adminObject->displayAbout(false);
