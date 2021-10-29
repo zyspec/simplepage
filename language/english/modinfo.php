@@ -12,6 +12,11 @@ define('_MI_SIMPLEPAGE_MODULENAME', 'Simple page');
 define('_MI_SIMPLEPAGE_MENU_PERP', 'Select number of results per page');
 define('_MI_SIMPLEPAGE_MENU_PERP_DESC', 'Here you can select the number of results shown per page for queries.');
 
+define('_MI_SIMPLEPAGE_TPL_INDEX_DESC', 'Main page template');
+define('_MI_SIMPLEPAGE_TPL_BREADCRUMB_DESC', 'Breadcrumb template');
+define('_MI_SIMPLEPAGE_TPL_ADMIN_PAGE_DESC', 'Admin page list template');
+define('_MI_SIMPLEPAGE_TPL_ADMIN_MENU_DESC', 'Admin menu list template');
+
 define('_MI_SIMPLEPAGE_MAXFILESIZE', '[upload files] Max file size (bytes)');
 define('_MI_SIMPLEPAGE_MAXFILESIZEDSC', 'Maximum file size permitted with file uploads.');
 define('_MI_SIMPLEPAGE_IMGWIDTH', '[upload files] Max upload image width (pixels)');

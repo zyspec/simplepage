@@ -2,15 +2,17 @@
 /**
  * Module settings
  *
- * @package  \Simplepage
+ * @package  \XoopsModules\Simplepage
  * @copyright  bitshine
+ * @copyright  &copy; 2000-2021 {@link https://xoops.org XOOPS Project}
  * @author  bitshine <bitshine@gmail.com>
+ * @author  XOOPS Module Development Team
  */
 
 use XoopsModules\Simplepage\Constants;
 
 /**
- * @var array $modversion
+ * @var  mixed[]  $modversion
  */
 include __DIR__ . '/preloads/autoloader.php';
 
@@ -21,8 +23,14 @@ xoops_loadLanguage('common', $moduleDirName);
 
 $modversion['name']           = _MI_SIMPLEPAGE_MODULENAME;
 $modversion['version']        = '0.4.0';
-$modversion['module_status']  = 'Alpha 1';
-$modversion['release_date']   = '2021/09/17';
+$modversion['module_status']  = 'alpha.1';
+$modversion['release_date']   = '2021/10/29';
+
+$modversion['min_php']        = '7.3';
+$modversion['min_xoops']      = '2.5.10';
+$modversion['min_admin']      = '1.2';
+$modversion['min_db']         = ['mysql' => '5.6', 'mysqli' => '5.6'];
+$modversion['official']       = 0;
 
 $modversion['module_website_name']  = 'XOOPS';
 $modversion['module_website_url']   = 'https://xoops.org';
@@ -34,9 +42,14 @@ $modversion['description'] = 'A simple page generation utility.';
 $modversion['credits']     = "bitshine <bitshine@gmail.com>";
 $modversion['author']      = "bitshine <bitshine@gmail.com>";
 //$modversion['help']        = "simplepage_help.html";
-$modversion['official']    = 0;
 $modversion['image']       = "assets/images/simplepage_slogo.jpg";
 $modversion['dirname']     = basename(__DIR__);
+
+// Icon locations
+$modversion['icons16']    = 'Frameworks/moduleclasses/icons/16';
+$modversion['icons32']    = 'Frameworks/moduleclasses/icons/32';
+$modversion['modicons16'] = 'assets/images/icons/16';
+$modversion['modicons32'] = 'assets/images/icons/32';
 
 // Sql file
 $modversion['sqlfile']['mysql'] = "sql/mysql.sql";
@@ -45,14 +58,18 @@ $modversion['tables'] = [
 	'simplepage_menuitem'
 ];
 
-// Templates
-// front page
+// ------------------- Templates -------------------
 $modversion['templates'] = [
-    ['file' => 'simplepage_index.tpl', 'description' => ''],
-    ['file' => 'simplepage_common_breadcrumb.tpl', 'description' => ''],
-    ['file' => 'admin/simplepage_page_list.tpl', 'description' => ''],
-    ['file' => 'admin/simplepage_menuitem_list.tpl', 'description' => '']
+    ['file' => 'simplepage_index.tpl', 'description' => _MI_SIMPLEPAGE_TPL_INDEX_DESC],
+    ['file' => 'simplepage_common_breadcrumb.tpl', 'description' => _MI_SIMPLEPAGE_TPL_BREADCRUMB_DESC],
+    ['file' => 'admin/simplepage_page_list.tpl', 'description' => _MI_SIMPLEPAGE_TPL_ADMIN_PAGE_DESC],
+    ['file' => 'admin/simplepage_menuitem_list.tpl', 'description' => _MI_SIMPLEPAGE_TPL_ADMIN_MENU_DESC]
 ];
+
+// ------------------- Install/Update -------------------
+$modversion['onInstall']   = 'include/oninstall.php';
+$modversion['onUpdate']    = 'include/onupdate.php';
+$modversion['onUninstall'] = 'include/onuninstall.php';
 
 // Main Menu
 $modversion['hasMain']     = 1;
