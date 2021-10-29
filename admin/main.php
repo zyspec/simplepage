@@ -11,9 +11,9 @@
  */
 
 /**
- * Module: Pedigree
+ * Module: Simplepage
  *
- * @package   \XoopsModules\Pedigree
+ * @package   \XoopsModules\Simplepage
  * @subpackage  admin
  * @author  XOOPS Module Development Team
  * @copyright  &copy; 2000-2021 {@link https://xoops.org XOOPS Project}
@@ -21,9 +21,9 @@
  * @since  0.4.0
  */
 
-use XoopsModules\Simplepage;
+use XoopsModules\Simplepage\Helper;
 
 require_once  dirname(__DIR__, 3) . '/include/cp_header.php';
-$helper = XoopsModules\Simplepage\Helper::getInstance();
+$helper = Helper::getInstance();
 $helper->loadLanguage('modinfo');
 require_once $helper->path('admin/menu.php');

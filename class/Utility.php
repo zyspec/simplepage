@@ -15,7 +15,6 @@ namespace XoopsModules\Simplepage;
 /**
  * @package  XoopsModules\Simplepage
  * @subpackage  class
- *
  * @copyright  {@link https://xoops.org/ XOOPS Project}
  * @license  {@link https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU GPL 2 or later}
  * @author  XOOPS Module Dev Team (https://xoops.org)
@@ -67,8 +66,8 @@ class Utility
      *
      * @uses \XoopsMediaUploader
      *
-     * @param int $num number of image in upload file array
-     * @return string name of uploaded image or '' if failed
+     * @param  int $num  number of image in upload file array
+     * @return  string  name of uploaded image or '' if failed
      */
     public static function uploadPicture($num)
     {
@@ -103,8 +102,13 @@ class Utility
     }
 
     /**
+     * Create Image thumbnails
+     *
+     * @uses  \XoopsModules\Simplepage\Common\Configurator
+     * @uses  \Zebra_Image
+     *
      * @param  string  $filename
-     * @param  bool  true - successfully created thumb, else false
+     * @return  bool  true - successfully created thumb, else false
      */
     public static function createThumbs(string $filename)
     {
@@ -175,8 +179,8 @@ class Utility
     }
 
     /**
-     * @param $string
-     * @return string
+     * @param  $string
+     * @return  string
      */
     public static function unHtmlEntities($string)
     {
@@ -187,6 +191,8 @@ class Utility
 
     /**
      * Show tabbed navigation
+     *
+     * @uses  \XoopsPageNav
      *
      * @param  int  $total_items
      * @param  int  $items_perpage
@@ -203,6 +209,8 @@ class Utility
 
     /**
      * Receive uploaded files
+     *
+     * @uses  \XoopsMediaUploader
      *
      * @param  null|int  $maxSize  Maximum file size
      * @param  string  $uploadPath  Upload path
@@ -224,7 +232,7 @@ class Utility
             //Instantiate XoopsMediaUploader
             require_once XOOPS_ROOT_PATH . '/class/uploader.php';
             /* @var  \XoopsMediaUploader  $uploader */
-            $uploader = new XoopsMediaUploader($uploadPath, $allowedMimeTypes, $maxSize, NULL, NULL);
+            $uploader = new \XoopsMediaUploader($uploadPath, $allowedMimeTypes, $maxSize, NULL, NULL);
             $uploader->setTargetFileName($targetFileName);
             //Get files
             if ($uploader->fetchMedia($formElementName)) {
@@ -306,6 +314,8 @@ class Utility
     }
 
     /**
+     * Encode EOC in string
+     *
      * @param  string  $text
      * @return  array|string|string[]
      */
@@ -314,6 +324,8 @@ class Utility
     }
 
     /**
+     * Decode EOC in string
+     *
      * @param  string  $text
      * @return  array|string|string[]
      */
