@@ -1,30 +1,32 @@
 <div class="breadcrumb"><{$breadcrumb}></div>
 <div id="simplepage">
-<table class="width100 bnone" style="border-spacing: 0px; padding: 0px;">
-  <tr>
-    <td id="simplepageLeftColumn">
-		<!-- menu -->
-		<ul id='simplepageNav'>
-		<{foreach from=$menuitems item=item}>
-			<{if $item->getVar('link') == $page->getVar('pageName')}>
-				<!-- Menu item of current page -->
-				<li id="currentMenuItem"><a href="<{$item->link()}>" target="<{$item->target()}>"><{$item->title()}></a></li>
-			<{else}>
-				<!-- Menu items that are not on the current page -->
-				<li class="menuitem"><a href="<{$item->link()}>" target="<{$item->target()}>"><{$item->title()}></a></li>
-			<{/if}>
-		<{/foreach}>
-		</ul>
-		</td>
-    
-		<td id="simplepageContent">
-		<!-- title -->
-		<{if $page->getVar('isDisplayTitle')}>
-			<h1><{$page->getVar('title')}></h1>
-		<{/if}>
-		<!-- content -->
-		<{$page->getVar('content')}>	
-		</td>
-  </tr>
-</table>
+	<table class="width100 bnone" style="padding: 0;">
+		<tr>
+			<td id="simplepageLeftColumn">
+				<!-- menu -->
+				<ul id='simplepageNav'>
+					<{* $page|@debug_print_var *}>
+					<{* $menuItemArray|@debug_print_var *}>
+					<{foreach from=$menuItemArray item=item}>
+					<{if $item.linkAttribs.link == $pageName}>
+					<!-- Menu item of current page -->
+					<li id="currentMenuItem"><a href="<{$item.linkAttribs.link}>" target="<{$item.linkAttribs.target}>"><{$item.linkAttribs.title}></a></li>
+					<{else}>
+					<!-- Menu items that are not on the current page -->
+					<li class="menuitem"><a href="<{$item.linkAttribs.link}>" target="<{$item.linkAttribs.target}>"><{$item.linkAttribs.title}></a></li>
+					<{/if}>
+					<{/foreach}>
+				</ul>
+			</td>
+
+			<td id="simplepageContent">
+				<!-- title -->
+				<{if $page.isDisplayTitle}>
+				<h1><{$page.title}></h1>
+				<{/if}>
+				<!-- content -->
+				<{$page.content}>
+			</td>
+		</tr>
+	</table>
 </div>
