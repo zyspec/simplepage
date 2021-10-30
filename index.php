@@ -41,6 +41,7 @@ $menuItemArray   = $menuitemHandler->getAll($criteria);
 foreach ($menuItemArray as $item) {
     $items['linkAttribs'] = [
         'link'   => $item->link(),
+        'page'   => $item->getVar('link'),
         'target' => $item->target(),
         'title'  => $item->title()
     ];

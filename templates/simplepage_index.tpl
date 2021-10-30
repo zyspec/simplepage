@@ -8,9 +8,9 @@
 					<{* $page|@debug_print_var *}>
 					<{* $menuItemArray|@debug_print_var *}>
 					<{foreach from=$menuItemArray item=item}>
-					<{if $item.linkAttribs.link == $pageName}>
+					<{if $item.linkAttribs.page == $pageName}>
 					<!-- Menu item of current page -->
-					<li id="currentMenuItem"><a href="<{$item.linkAttribs.link}>" target="<{$item.linkAttribs.target}>"><{$item.linkAttribs.title}></a></li>
+					<li id="currentMenuItem"><a href="#"><{$item.linkAttribs.title}></a></li>
 					<{else}>
 					<!-- Menu items that are not on the current page -->
 					<li class="menuitem"><a href="<{$item.linkAttribs.link}>" target="<{$item.linkAttribs.target}>"><{$item.linkAttribs.title}></a></li>
